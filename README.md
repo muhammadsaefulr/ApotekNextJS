@@ -1,4 +1,4 @@
-## <div align="center"><strong>Sistem Inventori Barang Gudang Sederhana</strong></div>
+## <div align="center"><strong>Sistem Manajemen Apotek Sederhana</strong></div>
 
 ## Overview
 
