@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  id       Int    @id @default(autoincrement())
+  roleName String @unique
+  users    User[]
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  image     Bytes?
+  username  String   @unique
+  email     String   @unique
+  password  String
+  roleId    Int
+  role      Role     @relation(fields: [roleId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+// System Inventory Product
+
+model SupplierBarang {
+  id            Int      @id @default(autoincrement())
+  namaSupplier  String?  @unique
+  emailSupplier String?
+  namaBarang    Barang[]
+  createdAt     DateTime @default(now())
+}
+
+model Barang {
+  id            Int          @id @default(autoincrement())
+  kodeProduk    String?      @unique
+  namaBarang    String       @unique
+  detilBarang   String?
+  stok          Int?
+  idKategori    Int
+  kategori      kategoriObat @relation(fields: [idKategori], references: [id])
+  hargaAwal     Int          @unique
+  hargaJual     Int          @unique
+  tglKadaluarsa DateTime?
+
+  supplier    SupplierBarang @relation(fields: [idSupplier], references: [id])
+  idSupplier  Int
+  idRakBarang Int
+
+  tanggalMasuk  DateTime?   @default(now())
+  tanggalKeluar DateTime?
+  transaksi     Transaksi[]
+}
+
+model kategoriObat {
+  id           Int      @id @default(autoincrement())
+  kategoriObat String   @unique
+  namaBarang   Barang[]
+}
+
+// Transaksi Barang 
+
+model Transaksi {
+  id          Int      @id @default(autoincrement())
+  idTransaksi String
+  kodeBarang  String
+  quantity    Int
+  total       Int
+  createdAt   DateTime @default(now())
+  barang      Barang   @relation(fields: [kodeBarang], references: [kodeProduk])
+}
+
+enum kategoriObatIsHardCode {
+  BEBAS
+  KERAS
+  TERBATAS
+  NARKOTIKA
+}
