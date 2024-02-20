@@ -67,13 +67,15 @@ model kategoriObat {
 // Transaksi Barang 
 
 model Transaksi {
-  id          Int      @id @default(autoincrement())
-  idTransaksi String
-  kodeBarang  String
-  quantity    Int
-  total       Int
-  createdAt   DateTime @default(now())
-  barang      Barang   @relation(fields: [kodeBarang], references: [kodeProduk])
+  id             Int      @id @default(autoincrement())
+  idTransaksi    String
+  namaProduk     String
+  kodeBarang     String
+  quantity       Int
+  hargaPerProduk Int
+  total          Int
+  createdAt      DateTime @default(now())
+  barang         Barang   @relation(fields: [kodeBarang], references: [kodeProduk])
 }
 
 enum kategoriObatIsHardCode {

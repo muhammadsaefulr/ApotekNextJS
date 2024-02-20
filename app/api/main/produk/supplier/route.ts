@@ -46,13 +46,16 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url)
     
-    const findNamaSupplier = searchParams.get("supplier") || ""
+    const findNamaSupplier = searchParams.get("nama") || ""
+
+    let whereQuery = {} as any
+    if(findNamaSupplier){
+      whereQuery.namaSupplier = findNamaSupplier
+    }
 
     const dataRes = await prisma.supplierBarang.findMany({
       include: { namaBarang: true },
-      where: {
-        namaSupplier: findNamaSupplier
-      }
+      where: whereQuery
     })
 
     return NextResponse.json({ message: "Berhasil Request !", data: dataRes })

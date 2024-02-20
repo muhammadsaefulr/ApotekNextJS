@@ -38,7 +38,9 @@ import DatePicker from "@/components/DatePicker"
 import TablePagination from "@/components/TabelPagination"
 import DataTableViewOptions from "@/components/TableViewOptions"
 
-import DialogDemo from "./actions/add-supplier"
+import AddSupplier from "./actions/add-supplier"
+import EditSupplier from "./actions/edit-supplier"
+import { setStateDataSupplierQuery } from "@/app/state/store/queryInput/store"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -73,8 +75,11 @@ export default function DataTable<TData, TValue>({
       <FilterForm />
       <div className='mt-6 space-y-2'>
         <div className='flex'>
-          <DialogDemo />
+          <AddSupplier />
           <DataTableViewOptions table={table} />
+          <div className="hidden">
+            <EditSupplier/>
+          </div>
         </div>
         <div className='rounded-md border px-2'>
           <Table>
@@ -126,7 +131,6 @@ export default function DataTable<TData, TValue>({
             </TableBody>
           </Table>
         </div>
-
         <>
           <TablePagination table={table} />
         </>
@@ -136,14 +140,14 @@ export default function DataTable<TData, TValue>({
 }
 
 const FilterForm = () => {
+  const {setDataSupplierQuery} = setStateDataSupplierQuery()
   const form = useForm({
     defaultValues: {
-      username: "",
-      date: undefined,
-      type: "",
+      namaSupplier: "",
     },
   })
   const onSubmit = (value: any) => {
+    setDataSupplierQuery(value)
     console.log(value)
   }
   return (
@@ -155,12 +159,12 @@ const FilterForm = () => {
         >
           <FormField
             control={form.control}
-            name='username'
+            name='namaSupplier'
             render={({ field }) => (
               <FormItem>
                 <FormControl>
                   <Input
-                    placeholder='Filter Email...'
+                    placeholder='Filter Nama Supplier...'
                     className='w-60'
                     {...field}
                   />
@@ -168,26 +172,13 @@ const FilterForm = () => {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name='date'
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <DatePicker
-                    initDate={field.value}
-                    onSelect={field.onChange}
-                  />
-                </FormItem>
-              )
-            }}
-          />
           <Button type='submit'>Search</Button>
           <Button
             variant='outline'
             type='reset'
             onClick={() => {
               form.reset()
+              window.location.reload()
             }}
           >
             Reset

@@ -20,6 +20,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useDialogEditSupplierStore } from "@/app/state/store/pagecomponents/dialogTrigger"
+import { useDeleteDataSupplier } from "@/app/react-query/action"
 
 export type dataItems = {
   id: number
@@ -52,8 +54,15 @@ export const columns: ColumnDef<dataItems>[] = [
     id: "actions",
     header: () => <div className='text-right'>Action</div>,
     cell: ({ row }) => {
+      const {isOpen, openDialog} = useDialogEditSupplierStore()
       const Barang = row.original
+      console.log("data dialog supplier edit : ", isOpen)
 
+      const { mutate: deleteData } = useDeleteDataSupplier()
+
+      const handleDelete = (id: number) => {
+        deleteData(id)
+      }
       return (
         <div className='text-right'>
           <DropdownMenu>
@@ -66,8 +75,8 @@ export const columns: ColumnDef<dataItems>[] = [
             <DropdownMenuContent align='end'>
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>View customer</DropdownMenuItem>
-              <DropdownMenuItem>View Barang details</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleDelete(Barang.id)}>Hapus Supplier</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => openDialog(Barang.id)}>View Supplier details</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

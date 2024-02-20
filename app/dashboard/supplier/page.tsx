@@ -6,6 +6,7 @@ import DataTable from "./data-table"
 import { useEffect } from 'react';
 import { useGetSupplierProduct } from "@/app/react-query/action";
 import CardSkeleton from "@/components/CardSkeleton";
+import { setStateDataSupplierQuery } from "@/app/state/store/queryInput/store";
 
   interface Props {}
   export default function Page({}: Props) {
@@ -16,11 +17,13 @@ import CardSkeleton from "@/components/CardSkeleton";
       return match ? match[1] : null;
     };
 
-    const { data, isLoading, isError, isSuccess } = useGetSupplierProduct()
-    console.log(data)
+    const { dataSupplierQuery } = setStateDataSupplierQuery()
+
+    const { data, isLoading, isError, isSuccess } = useGetSupplierProduct(dataSupplierQuery)
+    console.log("data supplier : ",data?.data, "isLoading: ", isLoading)
     
     const jsonData: dataItems[] =  data
-    ? data.data.map((item)  => {
+    ? data?.data.map((item)  => {
       return {
         id: item.id,
         namaSupplier: item.namaSupplier,

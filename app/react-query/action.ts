@@ -120,7 +120,7 @@ export const useDeleteDataProduct = () => {
   })
 }
 
-// Jenis Product
+// Kategori Product
 
 export const useGetKategoriProduct = (queryParams?: { sortBy?: string }) => {
   return useQuery<Kategori>({
@@ -129,23 +129,103 @@ export const useGetKategoriProduct = (queryParams?: { sortBy?: string }) => {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/main/produk/kategori`,
         { cache: "no-cache" },
+        )
+        return response.json()
+      },
+    })
+  }
+  
+  // Supplier Produk
+
+  export const useUpdateDataSupplier = () => {
+    return useMutation<any, Error, UpdateDataParams>({
+      mutationKey: ["updateDataSupplier"],
+      mutationFn: async ({ id, newObj }: UpdateDataParams) => {
+        if (newObj !== null) {
+          const response = await axios.put(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/api/main/produk/supplier/${id}`,
+            newObj,
+          )
+          return response.data
+        } else {
+          return null
+        }
+      },
+      onSuccess: () => {
+        toast.success("Berhasil Mengupdate Supplier")
+      },
+      onError: () => {
+        toast.error("Gagal Mengupdate Supplier !")
+      },
+    })
+  }
+  
+  export const useGetSupplierProductById = () => {
+    return useMutation<ApiSupplierResponse>({
+      mutationKey: ["getSupplierById"],
+      mutationFn: async (newObj: any) => {
+        if (newObj !== null) {
+          const response = await axios.get(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/api/main/produk/supplier/${newObj}`,
+          )
+          return response.data
+        } else {
+          return null
+        }
+      },
+    })
+  }
+
+  export const useGetSupplierProduct = (queryparams?: {
+    namaSupplier: string
+  }) => {
+  return useQuery<ApiSupplierResponse>({
+    queryKey: ["todos", queryparams?.namaSupplier],
+    queryFn: async () => {
+
+      const namaSupplier = queryparams?.namaSupplier || ""
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/main/produk/supplier?nama=${namaSupplier}`,
+        {
+          cache: "no-cache",
+        },
       )
       return response.json()
     },
   })
 }
 
-// Suppllier Produk
-
-export const useGetSupplierProduct = (queryParams?: { sortBy?: string }) => {
-  return useQuery<ApiSupplierResponse>({
-    queryKey: ["supplier"],
-    queryFn: async () => {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/main/produk/supplier`,
-        { cache: "no-cache" },
-      )
-      return response.json()
+export const useAddSupplier = () => {
+  return useMutation({
+    mutationKey: ["addSupplier"],
+    mutationFn: async (newObj: any) => {
+      if (newObj !== null) {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/main/produk/supplier`,
+          newObj,
+        )
+        return response.data
+      } else {
+        return null
+      }
     },
+    onSuccess: () => {
+      toast.success("Berhasil Menambahkan Data Suppplier !")
+    },
+  })
+}
+
+export const useDeleteDataSupplier = () => {
+  return useMutation({
+    mutationFn: async (id: number) => {
+      const response = await axios.delete(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/main/produk/supplier/${id}`,
+      )
+      return response.data
+    },
+    onSuccess: () => {
+      toast.success("Berhasil Menghapus Data Supplier !")
+    },
+    onError: () => {},
   })
 }

@@ -4,12 +4,22 @@ import { v4 as uuidv4 } from "uuid"
 
 const prisma = new PrismaClient()
 
+export async function GET() {
+  try {
+    const transaksi = await prisma.transaksi.findMany()
+
+    return NextResponse.json({message: "Berhasil Mengambil Semua Data Transaksi !", data: transaksi})
+  } catch (err){
+    return NextResponse.json({messsage: "Internal Server Error !", err_details: err})
+  }
+}
+
 export async function POST(req: Request) {
   try {
-    const { barangId, quantity } = await req.json()
+    const { kodeProduk, quantity } = await req.json()
 
     const barang = await prisma.barang.findUnique({
-      where: { id: barangId },
+      where: { kodeProduk: kodeProduk },
     })
 
     if (!barang) {
@@ -31,7 +41,7 @@ export async function POST(req: Request) {
 
      updateBarang = await prisma.barang.update({
         where: {
-            id: barangId,
+            kodeProduk: kodeProduk
         },
         data: {
             stok: barang?.stok - quantity
@@ -46,8 +56,10 @@ export async function POST(req: Request) {
 
     const transaksi = await prisma.transaksi.create({
         data: {
-            kodeBarang: barangId,
+            namaProduk: barang.namaBarang,
+            kodeBarang: kodeProduk,
             idTransaksi: generateKodeTransaksi(),
+            hargaPerProduk: barang.hargaAwal,
             quantity: quantity,
             total: total!
         }
