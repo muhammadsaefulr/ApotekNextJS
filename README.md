@@ -11,6 +11,10 @@ stack yang di pakai:
 - Components - [Shadcn-ui](https://ui.shadcn.com/)
 - Linting - [ESLint](https://eslint.org)
 - Formatting - [Prettier](https://prettier.io)
+- ORM - [Prisma](https://prisma.io)
+- State Management - [Zustand](https://zustand-demo.pmnd.rs/)
+
+
 
 ## Memulai
 
