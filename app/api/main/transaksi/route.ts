@@ -1,72 +1,126 @@
+import { NextApiRequest } from "next"
 import { NextResponse } from "next/server"
 import { PrismaClient } from "@prisma/client"
 import { v4 as uuidv4 } from "uuid"
 
 const prisma = new PrismaClient()
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const transaksi = await prisma.transaksi.findMany()
+    const { searchParams } = new URL(req.url)
+    const page = parseInt(searchParams.get("page") || "1", 10)
+    const sizePage = parseInt(searchParams.get("size") || "10", 10)
+    const viewBy = (searchParams.get("view"))
 
-    return NextResponse.json({message: "Berhasil Mengambil Semua Data Transaksi !", data: transaksi})
-  } catch (err){
-    return NextResponse.json({messsage: "Internal Server Error !", err_details: err})
+    let startDate;
+    let endDate;
+
+    if(viewBy === "day"){
+      const today = new Date()
+      startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1)
+    } else if(viewBy === "moth"){
+      const today = new Date()
+      startDate = new Date(today.getFullYear(), today.getMonth(), 1)
+      endDate = new Date(today.getFullYear(), today.getMonth() + 1, 1)
+    }
+
+    const skip = (page - 1) * sizePage
+
+    const transaksi = await prisma.transaksi.findMany({
+      take: sizePage,
+      skip,
+      where: {
+        createdAt: {
+          gte: startDate,
+          lt: endDate
+        }
+      }
+    })
+
+    return NextResponse.json(
+      {
+        message: "Berhasil Mengambil Semua Data Transaksi !",
+        data: transaksi,
+        page: page,
+        sizePage: sizePage,
+      },
+      { status: 200 },
+    )
+  } catch (err) {
+    return NextResponse.json(
+      { message: "Internal Server Error !", err_details: err },
+      { status: 500 },
+    )
   }
 }
 
 export async function POST(req: Request) {
   try {
-    const { kodeProduk, quantity } = await req.json()
+    const jsonData = await req.json()
 
-    const barang = await prisma.barang.findUnique({
-      where: { kodeProduk: kodeProduk },
-    })
+    let transactions = [];
 
-    if (!barang) {
-      return NextResponse.json({ message: "Barang tidak ditemukan !" })
-    }
+    for (const data of jsonData) {
+      const { kodeProduk, quantity } = data
 
-    let updateBarang;
-    let total;
+      const barang = await prisma.barang.findUnique({
+        where: { kodeProduk: kodeProduk },
+      })
 
-    if(barang.hargaAwal && barang.hargaJual && barang.stok !== null){
-
-      if (barang.stok - quantity < 0) {
-        return NextResponse.json({
-          message: "Stok tidak mencukupi"
-        });
+      if (!barang) {
+        return NextResponse.json({ message: "Barang tidak ditemukan !" })
       }
 
-    total = quantity * barang.hargaJual
+      let updateBarang
+      let total
 
-     updateBarang = await prisma.barang.update({
-        where: {
-            kodeProduk: kodeProduk
-        },
-        data: {
-            stok: barang?.stok - quantity
+      if (barang.hargaAwal && barang.hargaJual && barang.stok !== null) {
+        if (barang.stok - quantity < 0) {
+          return NextResponse.json({
+            message: "Stok tidak mencukupi",
+          })
         }
-    })
-    }
 
-    const generateKodeTransaksi = () => {
+        total = quantity * barang.hargaJual
+
+        updateBarang = await prisma.barang.update({
+          where: {
+            kodeProduk: kodeProduk,
+          },
+          data: {
+            stok: barang.stok - quantity,
+          },
+        })
+      }
+
+      const generateKodeTransaksi = () => {
         const uuid: string = uuidv4().substring(0, 12).toUpperCase()
         return uuid
       }
 
-    const transaksi = await prisma.transaksi.create({
-        data: {
-            namaProduk: barang.namaBarang,
-            kodeBarang: kodeProduk,
-            idTransaksi: generateKodeTransaksi(),
-            hargaPerProduk: barang.hargaAwal,
-            quantity: quantity,
-            total: total!
-        }
-    })
+      transactions.push({
+        namaProduk: barang.namaBarang,
+        kodeBarang: data.kodeProduk,
+        idTransaksi: generateKodeTransaksi(),
+        hargaPerProduk: barang.hargaAwal,
+        quantity: data.quantity,
+        total: barang.hargaAwal * data.quantity,
+      });
+    }
+     
+    const result = await prisma.transaksi.createMany({
+      data: transactions,
+    });
 
-    return NextResponse.json({message: "Transaksi Berhasil !", data: transaksi}, {status: 200})
+    return NextResponse.json(
+      { message: "Transaksi Berhasil !", data: transactions },
+      { status: 200 },
+    )
   } catch (err) {
-    return NextResponse.json({message: "Internal Server Error !", err_details: err}, {status: 500})
+    return NextResponse.json(
+      { message: "Internal Server Error !", err_details: err },
+      { status: 500 },
+    )
   }
 }

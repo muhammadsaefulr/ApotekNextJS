@@ -73,13 +73,9 @@ export default function DataTable<TData, TValue>({
   return (
     <>
       <FilterForm />
-      <div className='mt-6 space-y-2'>
+      <div className='space-y-2'>
         <div className='flex'>
-          <AddSupplier />
           <DataTableViewOptions table={table} />
-          <div className="hidden">
-            <EditSupplier/>
-          </div>
         </div>
         <div className='rounded-md border px-2'>
           <Table>

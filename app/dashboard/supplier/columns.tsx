@@ -50,39 +50,6 @@ export const columns: ColumnDef<dataItems>[] = [
       </div>
     ),
   },
-  {
-    id: "actions",
-    header: () => <div className='text-right'>Action</div>,
-    cell: ({ row }) => {
-      const {isOpen, openDialog} = useDialogEditSupplierStore()
-      const Barang = row.original
-      console.log("data dialog supplier edit : ", isOpen)
-
-      const { mutate: deleteData } = useDeleteDataSupplier()
-
-      const handleDelete = (id: number) => {
-        deleteData(id)
-      }
-      return (
-        <div className='text-right'>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant='ghost' className='h-8 w-8 p-0'>
-                <span className='sr-only'>Open menu</span>
-                <MoreHorizontal className='h-4 w-4' />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align='end'>
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => handleDelete(Barang.id)}>Hapus Supplier</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => openDialog(Barang.id)}>View Supplier details</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      )
-    },
-  },
 ]
 
 interface DataTableColumnHeaderProps<TData, TValue>

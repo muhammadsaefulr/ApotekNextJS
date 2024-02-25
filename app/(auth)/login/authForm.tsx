@@ -6,8 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { GitHubLogoIcon } from "@radix-ui/react-icons"
 import axios from "axios"
 import { Loader2 } from "lucide-react"
-import { signIn } from "next-auth/react"
-import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { cookies } from 'next/headers'
 
@@ -21,6 +19,9 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { signIn } from "next-auth/react"
+import { useForm } from "react-hook-form"
+import Link from "next/link"
 
 export default function AuthForm() {
   const [loading, setLoading] = useState(false)
@@ -107,11 +108,6 @@ export default function AuthForm() {
             {loading && <Loader2 className='mr-2 animate-spin' size={16} />}
             Submit
           </Button>
-          {/* <FormItem className='text-sm'>
-            <label htmlFor='remember' className='flex items-center font-normal'>
-              <Checkbox className='mr-2' id='remember' /> Remember this device.
-            </label>
-          </FormItem> */}
         </form>
       </Form>
       <div className='relative'>
@@ -124,6 +120,13 @@ export default function AuthForm() {
           </span>
         </div>
       </div>
+        <p className='px-8 text-center text-sm text-muted-foreground'>
+              Belum Punya Akun?{" "}
+              <Link
+                href='/signup'
+                className='underline underline-offset-4 hover:text-primary'
+              >Daftar</Link>
+            </p>
     </>
   )
 }

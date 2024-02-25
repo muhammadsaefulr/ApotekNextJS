@@ -11,7 +11,7 @@ import { Separator } from "@/components/ui/separator"
 
 export default async function Home() {
   return (
-    <main>
+    <main className='overflow-x-hidden'>
       <header className='sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
         <div className='container flex h-14 items-center justify-between'>
           <div className='mr-4 hidden md:flex'>
@@ -24,10 +24,9 @@ export default async function Home() {
               />
             </Link>
             <nav className='flex items-center space-x-6 text-sm font-medium'>
-              <Link href='/'>Documentation</Link>
-              <Link href='/'>Components</Link>
-              <Link href='/'>Themes</Link>
-              <Link href='/'>Examples</Link>
+              <Link href='/'>Fitur</Link>
+              <Link href='/'>Kontak</Link>
+              <Link href='/'>About</Link>
             </nav>
           </div>
 
@@ -48,32 +47,60 @@ export default async function Home() {
         </div>
       </header>
 
-      <div className='container'>
-        <PageHeader className='pb-8'>
-          <PageHeaderHeading>
-            Halo, Selamat Datang Di Website GoApotek
-          </PageHeaderHeading>
-          <PageHeaderDescription>
-            Silahkan Login Atau Register Untuk Memulai
-          </PageHeaderDescription>
-          <div className='flex w-full items-center space-x-4 pb-8 pt-4 md:pb-10'>
-            <Link href='/dashboard' className={cn(buttonVariants())}>
-              Get Started
-            </Link>
-            <Link
-              target='_blank'
-              rel='noreferrer'
-              href='https://github.com/muhammadsaefulr/inventori-gudang'
-              className={cn(buttonVariants({ variant: "outline" }))}
-            >
-              <GitHubLogoIcon className='mr-2 h-4 w-4' />
-              GitHub
-            </Link>
-          </div>
-        </PageHeader>
+      <div className='py-4' />
+
+      <div className='container flex justify-around py-12'>
+        <div className='pt-12'>
+          <PageHeader>
+            <PageHeaderHeading>Mudahkan Memantau Apotekmu</PageHeaderHeading>
+            <PageHeaderDescription>
+              Pantau Retail Apotek Mu Secara Mudah Dan Sederhana Dengan GoPotek
+            </PageHeaderDescription>
+            <div className='flex w-full items-center space-x-4 pb-8 pt-4 md:pb-10'>
+              <Link href='/dashboard' className={cn(buttonVariants())}>
+                Get Started
+              </Link>
+            </div>
+          </PageHeader>
+        </div>
+        <div className='mr-12 pb-8'>
+          <img width={350} height={110} src='/assets/apotek-vector.png' />
+        </div>
       </div>
 
-      <footer className='py-6 md:px-8 md:py-0'>
+      <div className='py-8' />
+
+      <div className='container ms-12 flex justify-around py-12'>
+        <div className='pb-6'>
+          <Image
+            src='/assets/preview-laptop.png'
+            width={350}
+            height={110}
+            alt='none'
+          />
+        </div>
+
+        <div className='ml-[10%] mt-5 pt-2'>
+          <div className='ml-[20%]'>
+            <p className='font-bold uppercase text-blue-500'>TENTANG KAMI</p>
+            <h1 className='w-[80%] text-3xl font-bold leading-tight tracking-tighter lg:leading-[1.1]'>
+              Platform Webiste Sederhana
+            </h1>
+            <div className='inline-block w-[80%] pt-2'>
+              <h1 className='text-1xl'>
+                Jelajahi kemudahan dan kenyamanan dalam memantau apotek Anda
+                dengan GoPotek!
+              </h1>
+              <h1 className='text-1xl w-[80%] pt-2'>
+                Anda dapat mengelola retail apotek secara efisien dan sederhana
+                Dengan antarmuka yang ramah pengguna.
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer className='py-6 md:px-6 md:py-0'>
         <div className='container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row'>
           <p className='text-center text-sm leading-loose text-muted-foreground md:text-left'>
             Built by{" "}
@@ -126,7 +153,7 @@ function PageHeaderHeading({
   return (
     <h1
       className={cn(
-        "text-3xl font-bold leading-tight tracking-tighter md:text-5xl lg:leading-[1.1]",
+        "text-1xl w-[90%] font-bold leading-tight tracking-tighter md:text-4xl lg:leading-[1.1]",
         className,
       )}
       {...props}
@@ -142,7 +169,7 @@ function PageHeaderDescription({
   return (
     <div
       className={cn(
-        "max-w-[750px] text-lg text-muted-foreground sm:text-xl",
+        "max-w-[60%] text-lg text-muted-foreground sm:text-xl",
         className,
       )}
       {...props}

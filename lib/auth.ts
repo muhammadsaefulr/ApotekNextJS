@@ -43,7 +43,7 @@ export const AuthOptions: NextAuthOptions = {
           return null
         }
 
-        console.log("data role: ", isExistingUser.role.roleName)
+        // console.log("data role: ", isExistingUser.role.roleName)
 
         return {
           id: isExistingUser.id + '',

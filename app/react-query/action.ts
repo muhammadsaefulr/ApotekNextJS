@@ -14,11 +14,100 @@ import { useToast } from "@/components/ui/use-toast"
 
 import {
   ApiProductResponse,
+  ApiStaffList,
   ApiSupplierResponse,
+  ApiTransaksi,
   BarangDataSubmit,
   Kategori,
   Supplier,
 } from "../../types/next-api"
+
+interface UpdateDataParams {
+  id: number
+  newObj: any
+}
+
+// User Function
+
+export const useAddStaff = () => {
+  return useMutation({
+    mutationKey: ["addStaff"],
+    mutationFn: async (newObj: any) => {
+      if (newObj !== null) {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/register`,
+          newObj,
+        )
+        return response.data
+      } else {
+        return null
+      }
+    },
+    onSuccess: () => {
+      toast.success("Berhasil Menambahkan Data staff !")
+    },
+    onError: () => {
+      toast.error("Gagal Menambah data staff")
+      setTimeout(function(){
+        location.reload();
+    }, 2000);
+    }
+  })
+}
+
+export const useUpdateDataStaff = () => {
+  return useMutation<any, Error, UpdateDataParams>({
+    mutationKey: ["updateDataStaff"],
+    mutationFn: async ({ id, newObj }: UpdateDataParams) => {
+      if (newObj !== null) {
+        const response = await axios.put(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/user/${id}`,
+          newObj,
+        )
+        return response.data
+      } else {
+        return null
+      }
+    },
+    onSuccess: () => {
+      toast.success("Berhasil Mengupdate Staff")
+    },
+    onError: () => {
+      toast.error("Gagal Mengupdate Staff !")
+    },
+  })
+}
+
+export const useGetStaffList = ({params}: {params: {role: string}}) => {
+  return useQuery<ApiStaffList>({
+    queryKey: ["useGetStaffList"],
+    queryFn: async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/user?role=${params.role}`,
+        {
+          cache: "no-cache",
+        },
+      )
+      return response.json()
+    },
+  })
+}
+
+export const useGetStaffById = () => {
+  return useMutation<ApiStaffList>({
+    mutationKey: ["getStaffById"],
+    mutationFn: async (newObj: any) => {
+      if (newObj !== null) {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/user/${newObj}`,
+        )
+        return response.data
+      } else {
+        return null
+      }
+    },
+  })
+}
 
 // Product Function
 export const useGetProduct = (queryparams?: {
@@ -72,15 +161,11 @@ export const useAddProduct = () => {
       }
     },
     onSuccess: () => {
-      toast.success("Berhasil Menambahkan Produk !")
+      toast.success("Berhasil Menambahkan Data Produk !")
     },
   })
 }
 
-interface UpdateDataParams {
-  id: number
-  newObj: any
-}
 
 export const useUpdateDataProduct = () => {
   return useMutation<any, Error, UpdateDataParams>({
@@ -129,60 +214,59 @@ export const useGetKategoriProduct = (queryParams?: { sortBy?: string }) => {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/main/produk/kategori`,
         { cache: "no-cache" },
+      )
+      return response.json()
+    },
+  })
+}
+
+// Supplier Produk
+
+export const useUpdateDataSupplier = () => {
+  return useMutation<any, Error, UpdateDataParams>({
+    mutationKey: ["updateDataSupplier"],
+    mutationFn: async ({ id, newObj }: UpdateDataParams) => {
+      if (newObj !== null) {
+        const response = await axios.put(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/main/produk/supplier/${id}`,
+          newObj,
         )
-        return response.json()
-      },
-    })
-  }
-  
-  // Supplier Produk
+        return response.data
+      } else {
+        return null
+      }
+    },
+    onSuccess: () => {
+      toast.success("Berhasil Mengupdate Supplier")
+    },
+    onError: () => {
+      toast.error("Gagal Mengupdate Supplier !")
+    },
+  })
+}
 
-  export const useUpdateDataSupplier = () => {
-    return useMutation<any, Error, UpdateDataParams>({
-      mutationKey: ["updateDataSupplier"],
-      mutationFn: async ({ id, newObj }: UpdateDataParams) => {
-        if (newObj !== null) {
-          const response = await axios.put(
-            `${process.env.NEXT_PUBLIC_BASE_URL}/api/main/produk/supplier/${id}`,
-            newObj,
-          )
-          return response.data
-        } else {
-          return null
-        }
-      },
-      onSuccess: () => {
-        toast.success("Berhasil Mengupdate Supplier")
-      },
-      onError: () => {
-        toast.error("Gagal Mengupdate Supplier !")
-      },
-    })
-  }
-  
-  export const useGetSupplierProductById = () => {
-    return useMutation<ApiSupplierResponse>({
-      mutationKey: ["getSupplierById"],
-      mutationFn: async (newObj: any) => {
-        if (newObj !== null) {
-          const response = await axios.get(
-            `${process.env.NEXT_PUBLIC_BASE_URL}/api/main/produk/supplier/${newObj}`,
-          )
-          return response.data
-        } else {
-          return null
-        }
-      },
-    })
-  }
+export const useGetSupplierProductById = () => {
+  return useMutation<ApiSupplierResponse>({
+    mutationKey: ["getSupplierById"],
+    mutationFn: async (newObj: any) => {
+      if (newObj !== null) {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/main/produk/supplier/${newObj}`,
+        )
+        return response.data
+      } else {
+        return null
+      }
+    },
+  })
+}
 
-  export const useGetSupplierProduct = (queryparams?: {
-    namaSupplier: string
-  }) => {
+export const useGetSupplierProduct = (queryparams?: {
+  namaSupplier: string
+}) => {
   return useQuery<ApiSupplierResponse>({
     queryKey: ["todos", queryparams?.namaSupplier],
     queryFn: async () => {
-
       const namaSupplier = queryparams?.namaSupplier || ""
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/main/produk/supplier?nama=${namaSupplier}`,
@@ -227,5 +311,41 @@ export const useDeleteDataSupplier = () => {
       toast.success("Berhasil Menghapus Data Supplier !")
     },
     onError: () => {},
+  })
+}
+
+// transaksi
+
+export const useGetDataTransaksi = (params?: {viewBy: string}) => {
+  return useQuery<ApiTransaksi>({
+    queryKey: ["getDataTransaksi"],
+    queryFn: async () => {
+      const transaksi = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/main/transaksi?page=1&view=${params?.viewBy}`, {cache: "no-cache"})
+      return transaksi.json()
+    },
+  })
+}
+
+export const useAddTransaksi = () => {
+  return useMutation({
+    mutationKey: ["addTransaksi"],
+    mutationFn: async (newObj: any) => {
+      if (newObj !== null) {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/main/transaksi`,
+          newObj,
+        )
+        return response.data
+      } else {
+        return null
+      }
+    },
+    onSuccess: () => {
+      toast.success("Berhasil Menambahkan Transaksi Ke Database !")
+      window.location.reload()
+    },
+    onError: () => {
+      toast.error("Gagal Menambahkan Transaksi Ke Database !")
+    }
   })
 }

@@ -24,3 +24,10 @@ export const useDialogEditSupplierStore = create<DialogState>((set) => ({
   openDialog: (data?: any) => set({ isOpen: true, value: data }),
   closeDialog: () => set({ isOpen: false})
 }))
+
+export const useDialogEditStaffStore = create<DialogState>((set) => ({
+  isOpen: false,
+  openDialog: (data?: any) => set({ isOpen: true, value: data }),
+  closeDialog: () => set({ isOpen: false})
+}))
+

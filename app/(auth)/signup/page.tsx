@@ -56,21 +56,11 @@ export default async function Page() {
               <SignUpForm />
             </div>
             <p className='px-8 text-center text-sm text-muted-foreground'>
-              By clicking continue, you agree to our{" "}
+              Silahkan Daftar Akun Terlebih Dahulu, Sudah Punya Akun?{" "}
               <Link
-                href='/terms'
+                href='/login'
                 className='underline underline-offset-4 hover:text-primary'
-              >
-                Terms of Service
-              </Link>{" "}
-              and{" "}
-              <Link
-                href='/privacy'
-                className='underline underline-offset-4 hover:text-primary'
-              >
-                Privacy Policy
-              </Link>
-              .
+              >Login</Link>
             </p>
           </div>
         </div>

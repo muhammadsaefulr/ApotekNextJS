@@ -81,8 +81,8 @@ export async function GET(req: NextRequest) {
     const dataResJson = products?.map((item) => ({
       ...item,
       kategori: item.kategori?.kategoriObat,
-      supplier: item.supplier.namaSupplier,
-      emailSupplier: item.supplier.emailSupplier,
+      supplier: item.supplier?.namaSupplier,
+      emailSupplier: item.supplier?.emailSupplier,
     }))
 
     return NextResponse.json(

@@ -8,35 +8,36 @@ export async function POST(req: Request) {
   try {
     const { username, email, password, roleId} = await req.json();
 
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma.user.findMany({
       where: {
         email: email,
-        username: username,
+        username: username
       },
     });
 
-    if (existingUser) {
+    if (!existingUser) {
       return NextResponse.json(
         { message: "User Sudah Sudah Terdaftar! Silahkan Login" },
         { status: 403 }
       );
     }
 
-    if(!username || !email || !password || !roleId){
-      return NextResponse.json({message: "Request Invalid, Coba Cek Kembali Body Request !"}, {status: 400})
+    if(!username || !email || !password){
+      return NextResponse.json({message: "Request Invalid, Coba Cek Kembali Body Request !"}, {status: 403})
     }
+
 
     const userRegistred = await prisma.user.create({
       data: {
         username: username,
         email: email,
         password: password,
-        roleId: parseInt(roleId)
+        roleId:  roleId != null ? parseInt(roleId) : 2
       },
     });
 
     return NextResponse.json(
-      { message: "data berhasil dibuat !", data: userRegistred },
+      { message: "data berhasil dibuat !", data: userRegistred},
       { status: 200 }
     );
   } catch (err) {

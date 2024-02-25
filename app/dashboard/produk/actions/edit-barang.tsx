@@ -55,6 +55,12 @@ export default function EditBarang() {
 
   const { mutate: idProd, data: valueProduct } = useGetProductById()
 
+  const extractDate = (isoDateString: string): string | null => {
+    const regex = /^(\d{4}-\d{2}-\d{2})/;
+    const match = isoDateString.match(regex);
+    return match ? match[1] : null;
+  };
+
   useEffect(() => {
     form.reset({
       namaBarang: valueProduct?.data?.namaBarang || '',
@@ -64,6 +70,7 @@ export default function EditBarang() {
       hargaAwal: valueProduct?.data?.hargaAwal || null,
       hargaJual: valueProduct?.data.hargaJual || null,
       stok: valueProduct?.data?.stok || null,
+      tglDitambahkan: extractDate(valueProduct?.data?.tanggalMasuk || '')
     })
   }, [valueProduct])
 
@@ -81,6 +88,7 @@ export default function EditBarang() {
     hargaAwal: z.coerce.number().or(z.literal("")),
     hargaJual: z.coerce.number().or(z.literal("")),
     idRakBarang: z.string(),
+    tglDitambahkan: z.coerce.string().or(z.literal(''))
   })
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -259,13 +267,32 @@ export default function EditBarang() {
                   render={({ field }) => {
                     return (
                       <FormItem>
-                        <Label className='text-right'>No Rak Barang</Label>
+                        <Label className='text-right'>Nomor Rak Barang</Label>
                         <FormControl>
                           <Input
                             type='number'
                             placeholder='Masukan Nomor Rak Dimana Barang Berada'
                             {...field}
                             className={errors.idRakBarang && erStyle}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )
+                  }}
+                />
+                <FormField
+                  control={form.control}
+                  name='tglDitambahkan'
+                  disabled={true}
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <Label className='text-right'>Tanggal Di Tambahkan</Label>
+                        <FormControl>
+                          <Input
+                            disabled={true}
+                            {...field}
                           />
                         </FormControl>
                         <FormMessage />

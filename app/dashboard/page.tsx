@@ -1,8 +1,6 @@
 import { useRouter } from "next/navigation"
 import { CreditCard, DollarSign, LineChart, Users } from "lucide-react"
-import { getServerSession } from "next-auth"
 
-import { AuthOptions } from "@/lib/auth"
 import {
   Card,
   CardContent,
@@ -11,20 +9,12 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
-import { CardsChat } from "./components/chat"
-import OverviewBar from "./components/overviewBar"
-import PieChartAnalytics from "./components/pieChart"
-import RecentSale from "./components/recentSale"
+import ListStaff from "./tablePreview/liststaff/page"
 import { dataValueSupplier, dataValueProduct, dataValueUsers } from "./manualDataFetch"
+import LastTranscation from "./tablePreview/lasttransaction/page"
 
 interface Props {}
 export default async function Page({}: Props) {
-  const session = await getServerSession(AuthOptions)
-  if (!session?.user) {
-    console.log("Belum login")
-  } else {
-    console.log("user login at data: ", session.user)
-  }
 
   const supplierProdukValue = await dataValueSupplier();
   const usersValue = await dataValueUsers()
@@ -89,17 +79,9 @@ export default async function Page({}: Props) {
           </Card>
         </div>
 
-        <div className=''>
-          <div className='col-span-4'>
-            <Card>
-              <CardHeader>
-                <CardTitle>Overview</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <OverviewBar />
-              </CardContent>
-            </Card>
-          </div>
+        <div className="">
+          <LastTranscation/>
+          <ListStaff/>
         </div>
       </div>
     </div>

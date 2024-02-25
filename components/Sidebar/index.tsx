@@ -18,6 +18,7 @@ import {
   Layers3,
   LibrarySquare,
   LineChart,
+  LucideTruck,
   MessageSquarePlus,
   Navigation,
   Package,
@@ -25,11 +26,13 @@ import {
   Receipt,
   Table,
   TruckIcon,
+  User2Icon,
 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
 import { Button } from "../ui/button"
+import { useSession } from "next-auth/react"
 
 export type SidebarNavItem = {
   title: string
@@ -84,29 +87,32 @@ const menu: SidebarNavItem[] = [
 
 const menuLaporan: SidebarNavItem[] = [
   {
-    title: "Laporan",
+    title: "Fitur Pemilik",
     items: [
       {
-        title: "Laporan Keuntungan",
-        href: "/",
+        title: "Laporan Penjualan",
+        href: "/dashboard/pemilik/laporan",
         icon: <FileBox size={16} />,
       },
       {
-        title: "Laporan Supplier",
-        href: "/",
-        icon: <FileAxis3D size={16} />,
+        title: "Data Staff",
+        href: "/dashboard/pemilik/staff",
+        icon: <User2Icon size={16} />,
       },
       {
-        title: "Laporan Pembelian",
-        href: "/",
-        icon: <FileBarChart size={16} />,
+        title: "Manajemen Supplier",
+        href: "/dashboard/pemilik/supplier",
+        icon: <LucideTruck size={16} />,
       },
     ],
   },
 ]
 
+
 export default function Sidebar({ className, onClick }: SidebarProps) {
   const pathName = usePathname()
+  const sessions = useSession()
+  const updatedMenu = sessions.data?.user.role === "Pemilik" ? [...menu, ...menuLaporan] : menu;
 
   return (
     <div className={cn("flex h-full w-[240px] flex-col", className)}>
@@ -114,7 +120,7 @@ export default function Sidebar({ className, onClick }: SidebarProps) {
         <Image width={100} height={100} src={"/logo-gopotek.png"} alt='image' />
       </div>
       <div className='py-4'>
-        {menu.map((item, index) => (
+      {updatedMenu.map((item, index) => (
           <div key={index} className='px-3 py-2'>
             <h2 className='mb-2 px-4 text-lg font-semibold tracking-tight'>
               {item.title}

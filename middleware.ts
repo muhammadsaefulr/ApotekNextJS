@@ -1,17 +1,28 @@
-import { withAuth } from "next-auth/middleware";
-import { NextRequest, NextResponse } from "next/server";
-console.log("env at procces middleware: ", process.env.NEXT_HOST)
+// Ref: https://next-auth.js.org/configuration/nextjs#advanced-usage
+import { NextResponse } from "next/server"
+import { NextRequestWithAuth, withAuth } from "next-auth/middleware"
 
-export function middleware(req: NextRequest){
-  return NextResponse.next()
-}
+export default withAuth(
+  function middleware(request: NextRequestWithAuth) {
+    // console.log(request.nextUrl.pathname)
+    // console.log(request.nextauth.token)
 
-export default withAuth({
-  pages: {
-    signIn: "/login",
+    if (
+      request.nextUrl.pathname.startsWith("/dashboard/pemilik") &&
+      request.nextauth.token?.role !== "Pemilik"
+    ) {
+      return NextResponse.rewrite(new URL("/dashboard", request.url))
+    }
   },
-});
+  {
+    pages: {
+      signIn: "/login",
+    },
+    callbacks: {
+      authorized: ({ token }) => !!token,
+    },
+  },
+)
 
-export const config = {
-  matcher: ["/dashboard/:path*", "/editor/:path*", "/login"],
-}
+// Ref: https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
+export const config = { matcher: ["/dashboard", "/dashboard/pemilik/:path*", "/login"] }
