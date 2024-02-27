@@ -20,8 +20,7 @@ import { setStateDataSupplierQuery } from "@/app/state/store/queryInput/store";
     const { data, isLoading, isError, isSuccess } = useGetStaffList()
     console.log("data staff : ",data?.data, "isLoading: ", isLoading)
     
-    const jsonData: dataItems[] =  data
-    ? data?.data.map((item)  => {
+    const jsonData: dataItems[] =  data && data.data ? data.data.map((item)  => {
       return {
         id: item.id,
         username: item?.username,

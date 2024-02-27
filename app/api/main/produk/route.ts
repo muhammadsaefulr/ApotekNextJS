@@ -117,6 +117,7 @@ export async function POST(req: Request) {
       tglKeluar,
       tglKadaluarsa,
       kodeProduk,
+      biayaSuplai,
     } = await req.json()
 
     const namaBarangUp = namaBarang.toUpperCase()
@@ -181,6 +182,7 @@ export async function POST(req: Request) {
         detilBarang: detilBarang,
         hargaAwal: hargaAwal,
         hargaJual: hargaJual,
+        biayaSupplai: biayaSuplai,
         stok: stok,
         idRakBarang: nomorRak,
         tglKadaluarsa: tglKadaluarsa,

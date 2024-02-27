@@ -68,6 +68,7 @@ export default function EditBarang() {
       detilBarang: valueProduct?.data?.detilBarang || '',
       idRakBarang: valueProduct?.data?.idRakBarang.toString() || '',
       hargaAwal: valueProduct?.data?.hargaAwal || null,
+      biayaSuplai: valueProduct?.data?.hargaAwal || null,
       hargaJual: valueProduct?.data.hargaJual || null,
       stok: valueProduct?.data?.stok || null,
       tglDitambahkan: extractDate(valueProduct?.data?.tanggalMasuk || '')
@@ -85,6 +86,7 @@ export default function EditBarang() {
     namaBarang: z.string().min(1),
     detilBarang: z.string().max(90),
     stok: z.coerce.number().or(z.literal("")),
+    biayaSuplai: z.coerce.number().or(z.literal("")),
     hargaAwal: z.coerce.number().or(z.literal("")),
     hargaJual: z.coerce.number().or(z.literal("")),
     idRakBarang: z.string(),
@@ -108,6 +110,7 @@ export default function EditBarang() {
       hargaJual: values.hargaJual,
       idRakBarang: parseInt(values.idRakBarang),
       nomorRak: parseInt(values.idRakBarang),
+      biayaSuplai: values.biayaSuplai
     }
 
     onSubmitAPI({ id: valueId, newObj: valuesValidation })
@@ -234,6 +237,26 @@ export default function EditBarang() {
                             placeholder='Masukan Harga Awal Barang'
                             {...field}
                             className={errors.hargaAwal && erStyle}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )
+                  }}
+                />
+                <FormField
+                  control={form.control}
+                  name='biayaSuplai'
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <Label className='text-right'>Biaya ReStock Produk</Label>
+                        <FormControl>
+                          <Input
+                            type='number'
+                            placeholder='Masukan Biaya Suplai Atau Restock Produk '
+                            {...field}
+                            className={errors.biayaSuplai && erStyle}
                           />
                         </FormControl>
                         <FormMessage />

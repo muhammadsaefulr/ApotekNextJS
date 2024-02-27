@@ -18,13 +18,13 @@ import DataTable from "./data-table"
 interface Props {}
 export default function Page({}: Props) {
   const { dataBarang } = setDataBarangTransaksi()
-  const {mutate: addTransaksi, data} = useAddTransaksi()  
+  const { mutate: addTransaksi, data } = useAddTransaksi()
   const { data: DataTransaksi, isSuccess, isLoading } = useGetDataTransaksi()
-  
-  let total = 0;
-  
-  for(let i = 0; i < dataBarang?.length; i++){
-    total += dataBarang[i].total;
+
+  let total = 0
+
+  for (let i = 0; i < dataBarang?.length; i++) {
+    total += dataBarang[i].total
   }
 
   if (isLoading) {
@@ -55,13 +55,13 @@ export default function Page({}: Props) {
 
   const jsonData: Barang[] = dataBarang
     ? dataBarang.map((item: any) => ({
-       id: item.id,
-       namaProduk: item?.namaBarang,
-       namaSupplier: item?.namaSupplier,
-       total: item?.total,
-       hargaPerPcs: item?.hargaPerPcs,
-       kodeProduk: item?.kodeProduk,
-       quantity: item?.quantity
+        id: item.id,
+        namaProduk: item?.namaBarang,
+        namaSupplier: item?.namaSupplier,
+        total: item?.total,
+        hargaPerPcs: item?.hargaPerPcs,
+        kodeProduk: item?.kodeProduk,
+        quantity: item?.quantity,
       }))
     : []
 
@@ -70,17 +70,22 @@ export default function Page({}: Props) {
   }
 
   const submitTransaction = () => {
-
     const dataValuesSubmitValidation: any[] = dataBarang
-    ? dataBarang.map((item: any) => ({
-       kodeProduk: item?.kodeProduk,
-       quantity: item?.quantity
-      }))
-    : []
+      ? dataBarang.map((item: any) => ({
+          kodeProduk: item?.kodeProduk,
+          quantity: item?.quantity,
+        }))
+      : []
 
     console.log("data submit transaction : ", dataValuesSubmitValidation)
     addTransaksi(dataValuesSubmitValidation)
-  } 
+  }
+
+  const reloadPage = () => {
+    setTimeout(function () {
+      location.reload()
+    }, 1000)
+  }
 
   return (
     <div>
@@ -88,21 +93,23 @@ export default function Page({}: Props) {
         <p className='mb-3 font-bold'>
           DATE: <a className='font-regular'>{formattedDate}</a>
         </p>
-        <Button type='submit' form='addbills-form'>
-          Tambah Ke List
-        </Button>
+        <div className='flex justify-between'>
+          <div className='mx-3'>
+            <Button className='' type='submit' form='addbills-form'>
+              Tambah Ke List
+            </Button>
+          </div>
+          <div className=''>
+            <Button onClick={reloadPage}>Reset</Button>
+          </div>
+        </div>
       </div>
       <DataTable columns={columns} data={jsonData} />
 
       <div className='flex justify-between pt-3'>
         <div className='grid w-full max-w-sm items-center gap-1.5'>
           <p className='font-bold'>Total Harga</p>
-          <Input
-            value={total}
-            disabled={true}
-            type='name'
-            id='name'
-          />
+          <Input value={total} disabled={true} type='name' id='name' />
         </div>
         <div className='mt-8'>
           <Button type='submit' onClick={submitTransaction}>

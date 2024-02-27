@@ -136,7 +136,7 @@ export default function AddBill() {
                       <PopoverContent className='w-[200px] p-0'>
                         <Command>
                           <CommandInput
-                            placeholder='Search framework...'
+                            placeholder='Cari Barang...'
                             className='h-9'
                           />
                           <CommandEmpty>No data found.</CommandEmpty>

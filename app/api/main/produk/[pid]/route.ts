@@ -5,7 +5,7 @@ import { PrismaClient } from "@prisma/client"
 const prisma = new PrismaClient()
 
 export const GET = async (
-  req: NextApiRequest,
+  req: Request,
   { params }: { params: { pid: any } },
 ) => {
   const dataParams = parseInt(params.pid)
@@ -109,16 +109,22 @@ export async function DELETE(
         { status: 404 },
       )
     }
+    const transaction = await prisma.transaksi.deleteMany({
+      where: {
+        kodeBarang: {
+          equals: findBarangById.kodeProduk || undefined,
+        },
+      },
+    });
 
     const deleteBarang = await prisma.barang.delete({
       where: {
         id: idParam,
       },
-  
     })
 
     return NextResponse.json(
-      { message: "Berhasil Menghapus : ", deleteBarang },
+      { message: "Berhasil Menghapus : ", deleteBarang, transaction},
       { status: 200 },
     )
   } catch (err) {

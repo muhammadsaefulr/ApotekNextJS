@@ -48,10 +48,12 @@ export default function EditStaff() {
   console.log("value get supplier : ", valueUser)
 
   useEffect(() => {
-    form.reset({
-      username: valueUser?.data?.username || "",
-      email: valueUser?.data?.email || "",
-    })
+    if (valueUser?.data && valueUser?.data.length > 0) {
+      form.reset({
+        username: valueUser.data[0].username || "",
+        email: valueUser.data[0].email || "",
+      })
+    }
   }, [valueUser])
 
   const formSchema = z.object({

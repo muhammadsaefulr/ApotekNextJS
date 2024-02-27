@@ -66,12 +66,14 @@ export default function EditSupplier() {
 
     console.log("value get supplier : ", valueSupplier)
     
-  useEffect(() => {
-    form.reset({
-      namaSupplier: valueSupplier?.data?.namaSupplier || '',
-      emailSupplier: valueSupplier?.data?.emailSupplier || '',
-    })
-  }, [valueSupplier])
+    useEffect(() => {
+      if (valueSupplier?.data && valueSupplier?.data.length > 0) {
+        form.reset({
+          namaSupplier: valueSupplier.data[0]?.namaSupplier || '',
+          emailSupplier: valueSupplier.data[0]?.emailSupplier || '',
+        })
+      }
+    }, [valueSupplier])
 
 
   const formSchema = z.object({

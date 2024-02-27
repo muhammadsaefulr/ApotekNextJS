@@ -58,10 +58,11 @@ export default function AddBarang() {
   )
 
   const formSchema = z.object({
-    kodeProduk: z.string().min(9).max(9),
+    kodeProduk: z.string().optional(),
     namaBarang: z.string().min(1),
     detilBarang: z.string().max(90),
     stok: z.coerce.number().or(z.literal("")),
+    biayaSuplai: z.coerce.number().or(z.literal("")),
     hargaAwal: z.coerce.number().or(z.literal("")),
     hargaJual: z.coerce.number().or(z.literal("")),
     tglKadaluarsa: z.date({
@@ -81,6 +82,7 @@ export default function AddBarang() {
       stok: 90,
       hargaAwal: 28000,
       hargaJual: 32000,
+      biayaSuplai: 489000,
     },
   })
 
@@ -88,9 +90,10 @@ export default function AddBarang() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const valuesValidation = {
       kodeProduk: values.kodeProduk,
-      namaBarang: values.namaBarang,
+      namaBarang: values.namaBarang.toUpperCase(),
       detilBarang: values.detilBarang,
       stok: values.stok,
+      biayaSuplai: values.biayaSuplai,
       hargaAwal: values.hargaAwal,
       hargaJual: values.hargaJual,
       tglKadaluarsa: values.tglKadaluarsa,
@@ -205,6 +208,26 @@ export default function AddBarang() {
                             placeholder='Masukan Jumlah Stok Barang'
                             {...field}
                             className={errors.stok && erStyle}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )
+                  }}
+                />
+                 <FormField
+                  control={form.control}
+                  name='biayaSuplai'
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <Label className='text-right'>Biaya ReStock Produk</Label>
+                        <FormControl>
+                          <Input
+                            type='number'
+                            placeholder='Masukan Biaya Suplai Atau Restock Produk '
+                            {...field}
+                            className={errors.biayaSuplai && erStyle}
                           />
                         </FormControl>
                         <FormMessage />

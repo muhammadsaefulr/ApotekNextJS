@@ -19,8 +19,8 @@ model Role {
 model User {
   id        Int      @id @default(autoincrement())
   image     Bytes?
-  username  String   
-  email     String   
+  username  String?  @unique
+  email     String?  @unique
   password  String
   roleId    Int
   role      Role     @relation(fields: [roleId], references: [id])
@@ -42,11 +42,12 @@ model Barang {
   kodeProduk    String?      @unique
   namaBarang    String       @unique
   detilBarang   String?
+  biayaSupplai  Int
   stok          Int?
   idKategori    Int
   kategori      kategoriObat @relation(fields: [idKategori], references: [id])
-  hargaAwal     Int         
-  hargaJual     Int         
+  hargaAwal     Int
+  hargaJual     Int
   tglKadaluarsa DateTime?
 
   supplier    SupplierBarang @relation(fields: [idSupplier], references: [id])

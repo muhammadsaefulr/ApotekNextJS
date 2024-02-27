@@ -1,8 +1,16 @@
 
-// Types Interface Barang
+// Types Interface 
 export interface ApiProductResponse {
     message: string,
     data: DataItemProduct[]
+}
+
+export interface ApiPenjualanLaporanResponse {
+    message: string,
+    data: DataTransaksi[]
+    hpp: number,
+    labaKotor: number,
+    labaBersih: number
 }
 
 export interface ApiSupplierResponse {
@@ -27,10 +35,9 @@ export interface DataItemProduct {
     idKategori: number;
     tglKadaluarsa: string;
     idRakBarang: number;
-    tanggalMasuk: string;
-    tanggalKeluar: string;
     idJenis: string;
     idSupplier: string;
+    kategori: string
   }
 
 export interface kategoriDataObat {

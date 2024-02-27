@@ -22,7 +22,6 @@ export default async function AdminLayout({
       <div className='flex-1'>
         <Header>
           <SwitchMode />
-          <Setting />
           <UserMenu
             user={{
               name: session.user.name,

@@ -15,14 +15,13 @@ interface Props {}
 export default function LastTranscation({}: Props) {
 
   const {dataBarangQuery} = setStateDataBarangQuery()
-  const { data: Transaksi, isLoading, isError, isSuccess } = useGetDataTransaksi({viewBy: "day"})
+  const { data: Transaksi, isLoading, isSuccess } = useGetDataTransaksi({viewBy: "day"})
   console.log("state query: ", dataBarangQuery)
   if (isLoading) {
     return <CardSkeleton />
   }
 
-  const jsonData: Data[] =  Transaksi
-  ? Transaksi?.data.map((item)  => {
+  const jsonData: Data[] =  Transaksi && Transaksi.data ? Transaksi.data.map((item)  => {
     return {
     id: item.id,
     namaProduk: item.namaProduk,

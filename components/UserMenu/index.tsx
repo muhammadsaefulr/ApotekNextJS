@@ -63,11 +63,6 @@ export default function UserMenu({ user }: Props) {
             <span>Profile</span>
             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Settings className='mr-2 h-4 w-4' />
-            <span>Settings</span>
-            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-          </DropdownMenuItem>
           <DropdownMenuItem onClick={handleLogOut}>
             <LogOut className='mr-2 h-4 w-4' />
             <span>Log out</span>

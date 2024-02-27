@@ -13,6 +13,7 @@ import { number } from "zod"
 import { useToast } from "@/components/ui/use-toast"
 
 import {
+  ApiPenjualanLaporanResponse,
   ApiProductResponse,
   ApiStaffList,
   ApiSupplierResponse,
@@ -78,12 +79,13 @@ export const useUpdateDataStaff = () => {
   })
 }
 
-export const useGetStaffList = ({params}: {params: {role: string}}) => {
+export const useGetStaffList = (queryParams? : {role: string}) => {
   return useQuery<ApiStaffList>({
-    queryKey: ["useGetStaffList"],
+    queryKey: ["useGetStaffList", queryParams?.role],
     queryFn: async () => {
+      const role = queryParams?.role ?? "Staff"
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/user?role=${params.role}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/user?role=${role}`,
         {
           cache: "no-cache",
         },
@@ -115,7 +117,7 @@ export const useGetProduct = (queryparams?: {
   produk: string
 }) => {
   return useQuery<ApiProductResponse>({
-    queryKey: ["todos", queryparams?.kategori, queryparams?.produk],
+    queryKey: ["getProduct", queryparams?.kategori, queryparams?.produk],
     queryFn: async () => {
       const produk = queryparams?.produk ?? ""
       const kategori = queryparams?.kategori ?? 0
@@ -265,7 +267,7 @@ export const useGetSupplierProduct = (queryparams?: {
   namaSupplier: string
 }) => {
   return useQuery<ApiSupplierResponse>({
-    queryKey: ["todos", queryparams?.namaSupplier],
+    queryKey: ["getSupplierProduct", queryparams?.namaSupplier],
     queryFn: async () => {
       const namaSupplier = queryparams?.namaSupplier || ""
       const response = await fetch(
@@ -347,5 +349,27 @@ export const useAddTransaksi = () => {
     onError: () => {
       toast.error("Gagal Menambahkan Transaksi Ke Database !")
     }
+  })
+}
+
+// Laporan produk
+
+export const useGetLaporanPejualan = (queryparams?: {
+  startDate: number
+  endDate: string
+}) => {
+  return useQuery<ApiPenjualanLaporanResponse>({
+    queryKey: ["getPenjualan", queryparams?.startDate, queryparams?.endDate],
+    queryFn: async () => {
+      const startDate = queryparams?.startDate ?? ""
+      const endDate = queryparams?.endDate ?? 0
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/main/laporan?gte=${startDate}&lt=${endDate}`,
+        {
+          cache: "no-cache",
+        },
+      )
+      return response.json()
+    },
   })
 }

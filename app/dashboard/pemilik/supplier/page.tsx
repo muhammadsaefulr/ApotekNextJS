@@ -22,8 +22,7 @@ import { setStateDataSupplierQuery } from "@/app/state/store/queryInput/store";
     const { data, isLoading, isError, isSuccess } = useGetSupplierProduct(dataSupplierQuery)
     console.log("data supplier : ",data?.data, "isLoading: ", isLoading)
     
-    const jsonData: dataItems[] =  data
-    ? data?.data.map((item)  => {
+    const jsonData: dataItems[] =  data && data.data ? data.data.map((item)  => {
       return {
         id: item.id,
         namaSupplier: item.namaSupplier,
