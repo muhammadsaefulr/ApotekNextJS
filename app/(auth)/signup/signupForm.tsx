@@ -38,6 +38,7 @@ export default function SignUpForm() {
       username: "saepulid",
       email: "epulid@gmail.com",
       password: "admin123",
+      roleId: 1
     },
   })
 
