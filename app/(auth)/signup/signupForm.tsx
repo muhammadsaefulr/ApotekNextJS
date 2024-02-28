@@ -51,6 +51,10 @@ export default function SignUpForm() {
       email: values.email,
       password: values.password,
       roleId: values.roleId
+    }).then(function (response){
+      alert(response.data?.message)
+    }).catch(function (error){
+      console.log(error)
     })
 
     const loggedIn = await signIn("credentials", {

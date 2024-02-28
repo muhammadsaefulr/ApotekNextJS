@@ -8,10 +8,10 @@ export async function POST(req: Request) {
   try {
     const { username, email, password, roleId} = await req.json();
 
-    const existingUser = await prisma.user.findMany({
+    const existingUser = await prisma.user.findUnique({
       where: {
+        username: username,
         email: email,
-        username: username
       },
     });
 
