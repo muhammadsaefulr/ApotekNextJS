@@ -79,7 +79,7 @@ export async function POST(req: Request) {
         if (barang.stok - quantity < 0) {
           return NextResponse.json({
             message: "Stok tidak mencukupi",
-          })
+          }, {status: 400})
         }
 
         total = quantity * barang.hargaJual

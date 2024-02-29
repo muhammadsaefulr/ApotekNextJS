@@ -16,7 +16,7 @@ const dataValueProduct = async (): Promise<any> => {
 }
 
 const dataValueTransaksi = async (): Promise<any> => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/main/transaksi?tanggal=&viewBy=day`)
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/main/transaksi?tanggal=&view=day`)
   return res.json()
 }
 
