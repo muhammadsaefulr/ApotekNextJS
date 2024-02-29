@@ -44,6 +44,7 @@ export default function AuthForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
+    setLoading(true)
 
     const signinData = await signIn("credentials", {
       email: values.email,
@@ -51,13 +52,17 @@ export default function AuthForm() {
       redirect: false
     })
 
-    console.log("at data signin",signinData)
+    // console.log("at data signin",signinData)
 
     if(signinData?.error){
       toast.error("Email Atau Pasword Yang Dimasukan Salah !")
     }
 
-    router.replace("/dashboard")
+    if(signinData?.ok){
+      router.replace("/dashboard")
+      setLoading(false)
+    }
+
   }
 
   const {
