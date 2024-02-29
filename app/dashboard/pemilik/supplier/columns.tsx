@@ -20,8 +20,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { useDialogEditSupplierStore } from "@/app/state/store/pagecomponents/dialogTrigger"
 import { useDeleteDataSupplier } from "@/app/react-query/action"
+import { useState } from "react"
 
 export type dataItems = {
   id: number
@@ -58,11 +70,6 @@ export const columns: ColumnDef<dataItems>[] = [
       const Barang = row.original
       console.log("data dialog supplier edit : ", isOpen)
 
-      const { mutate: deleteData } = useDeleteDataSupplier()
-
-      const handleDelete = (id: number) => {
-        deleteData(id)
-      }
       return (
         <div className='text-right'>
           <DropdownMenu>
@@ -75,7 +82,7 @@ export const columns: ColumnDef<dataItems>[] = [
             <DropdownMenuContent align='end'>
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => handleDelete(Barang.id)}>Hapus Supplier</DropdownMenuItem>
+              <DeleteDialog data={Barang.id}/>
               <DropdownMenuItem onClick={() => openDialog(Barang.id)}>View Supplier details</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -136,5 +143,46 @@ function DataTableColumnHeader<TData, TValue>({
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
+  )
+}
+
+function DeleteDialog({
+  className,
+  children,
+  data,
+  ...props
+}: { data: number } & React.HTMLAttributes<HTMLDivElement>) {
+
+  const [isOpen, setIsopen] = useState(false)
+  const { mutate: deleteData } = useDeleteDataSupplier()
+
+  const handleDelete = () => {
+    deleteData(data)
+    setIsopen(false)
+  }
+
+  return (
+    <AlertDialog open={isOpen} onOpenChange={setIsopen} defaultOpen={isOpen}>
+      <AlertDialogTrigger onClick={() => setIsopen(true)}>
+        <Button variant='ghost' className='p-2'>
+          Hapus Supplier
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>
+            Apakah Kamu Yakin Ingin Menghapus Supplier??
+          </AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently dele
+            remove your data from our servers.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+         <Button onClick={() => handleDelete()}>Continue</Button>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   )
 }

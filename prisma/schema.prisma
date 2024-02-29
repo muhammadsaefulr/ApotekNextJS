@@ -50,7 +50,7 @@ model Barang {
   hargaJual     Int
   tglKadaluarsa DateTime?
 
-  supplier    SupplierBarang @relation(fields: [idSupplier], references: [id])
+  supplier    SupplierBarang @relation(fields: [idSupplier], references: [id], onDelete: Cascade, onUpdate: Cascade)
   idSupplier  Int
   idRakBarang Int
 
@@ -76,7 +76,7 @@ model Transaksi {
   hargaPerProduk Int
   total          Int
   createdAt      DateTime @default(now())
-  barang         Barang   @relation(fields: [kodeBarang], references: [kodeProduk])
+  barang         Barang   @relation(fields: [kodeBarang], references: [kodeProduk], onUpdate: Cascade, onDelete: Cascade)
 }
 
 enum kategoriObatIsHardCode {

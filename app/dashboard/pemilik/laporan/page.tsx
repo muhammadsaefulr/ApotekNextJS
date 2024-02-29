@@ -21,6 +21,7 @@ export default function Page({}: Props) {
 
   const { data: Transaksi } = useGetDataTransaksi()
   const { data: Produk, isLoading, isError, isSuccess } = useGetLaporanPejualan()
+  console.log("data transaksi : ", Transaksi)
 
   const jsonData: dataItems[] = Produk
     ? Produk?.data.map((item) => {

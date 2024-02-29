@@ -7,8 +7,8 @@ export async function GET(req: Request) {
     try {
         // Mendapatkan tanggal awal dan akhir bulan ini
         const currentDate = new Date();
-        const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), + 1);
+        const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1);
 
         // Mendapatkan informasi penjualan bulan ini
         const dataTransaksi = await prisma.transaksi.findMany({
@@ -34,14 +34,16 @@ export async function GET(req: Request) {
         });
 
         // Menghitung laba bersih
-        const labaBersih = labaKotor - biayaPembelian;
+        const labaBersih = labaKotor !== 0 ? labaKotor - biayaPembelian : 0;
 
         return NextResponse.json({
             message: "Berhasil Request",
             data: dataTransaksi,
             hpp: biayaPembelian,
             labaKotor: labaKotor,
-            labaBersih: labaBersih
+            labaBersih: labaBersih,
+            tanggal: firstDayOfMonth,
+            akhirBulan: lastDayOfMonth
         }, {
             status: 200
         });

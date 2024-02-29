@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -11,6 +11,17 @@ import { Column, ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
@@ -23,6 +34,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useDeleteDataProduct } from "@/app/react-query/action"
 import { useDialogViewBarangStore } from "@/app/state/store/pagecomponents/dialogTrigger"
+
 import EditBarang from "./actions/edit-barang"
 
 export type Barang = {
@@ -84,15 +96,9 @@ export const columns: ColumnDef<Barang>[] = [
     id: "actions",
     header: () => <div className='text-right'>Action</div>,
     cell: ({ row }) => {
-      const {isOpen, openDialog } = useDialogViewBarangStore()
+      const { isOpen, openDialog } = useDialogViewBarangStore()
       console.log("isOpen Modal View : ", isOpen)
       const Barang = row.original
-
-      const { mutate: deleteData } = useDeleteDataProduct()
-
-      const handleDelete = (id: number) => {
-        deleteData(id)
-      }
 
       return (
         <div className='text-right'>
@@ -110,9 +116,10 @@ export const columns: ColumnDef<Barang>[] = [
               >
                 Copy Barang ID
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleDelete(Barang.id)}>
+              <DeleteDialog data={Barang.id} />
+              {/* <DropdownMenuItem onClick={() => handleDelete(Barang.id)}>
                 Hapus Barang
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
               <DropdownMenuItem onClick={() => openDialog(Barang.id)}>
                 Edit Data
               </DropdownMenuItem>
@@ -175,5 +182,46 @@ function DataTableColumnHeader<TData, TValue>({
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
+  )
+}
+
+function DeleteDialog({
+  className,
+  children,
+  data,
+  ...props
+}: { data: number } & React.HTMLAttributes<HTMLDivElement>) {
+
+  const [isOpen, setIsopen] = useState(false)
+  const { mutate: deleteData } = useDeleteDataProduct()
+
+  const handleDelete = () => {
+    deleteData(data)
+    setIsopen(false)
+  }
+
+  return (
+    <AlertDialog open={isOpen} onOpenChange={setIsopen} defaultOpen={isOpen}>
+      <AlertDialogTrigger onClick={() => setIsopen(true)}>
+        <Button variant='ghost' className='p-2'>
+          Hapus Produk
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>
+            Apakah Kamu Yakin Ingin Menghapus Produk??
+          </AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete your
+            account and remove your data from our servers.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+         <Button onClick={() => handleDelete()}>Continue</Button>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   )
 }

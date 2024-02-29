@@ -1,11 +1,22 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons"
+import axios from "axios"
 import { Loader2 } from "lucide-react"
+import { signIn } from "next-auth/react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+} from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -15,13 +26,12 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import axios from "axios"
-import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation"
+import { useRegisterStaff } from "@/app/react-query/action"
+import { AlertDialogAction } from "@radix-ui/react-alert-dialog"
 
 export default function SignUpForm() {
   const router = useRouter()
-  const [loading, setLoading] = useState(false)
+  const [isDialogOpen, setDialogOpen] = useState(false)
   const formSchema = z.object({
     username: z
       .string()
@@ -29,7 +39,7 @@ export default function SignUpForm() {
       .max(20, { message: "IUsername cannot be more than 20 characters" }),
     email: z.string().email({ message: "Invalid email address." }),
     password: z.string().min(1, { message: "Invalid password." }),
-    roleId: z.number().min(1)
+    roleId: z.number().min(1),
   })
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -38,40 +48,50 @@ export default function SignUpForm() {
       username: "saepulid",
       email: "epulid@gmail.com",
       password: "admin123",
-      roleId: 1
+      roleId: 1,
     },
   })
 
- async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-    setLoading(true)
+  const {
+    mutate: onSubmitAPI,
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useRegisterStaff()
 
-    await axios.post("/api/auth/register", {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+  
+    const valuesValidation = {
       username: values.username,
       email: values.email,
       password: values.password,
-      roleId: values.roleId
-    }).then(function (response){
-      alert(response.data?.message)
-    }).catch(function (error){
-      console.log(error)
-    })
+      roleId: values.roleId,
+    }
 
-    const loggedIn = await signIn("credentials", {
-      email: values.email,
-      password: values.password
-    })
+    onSubmitAPI(valuesValidation)
 
-    router.replace("/dashboard")
-   
-    setTimeout(() => {
-      setLoading(false)
-    }, 3000)
+    if (isError) {
+      setDialogOpen(true)
+    }
 
+    if (isSuccess) {
+      const loggedIn = await signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        redirect: false,
+      })
+
+      if (loggedIn?.ok) {
+        router.replace("/dashboard")
+      } else {
+        setDialogOpen(true)
+      }
+    }
   }
-  const {
-    formState: { errors },
-  } = form
+
+  const { errors } = form.formState
+  console.log("tes isOpenDialog : ", isDialogOpen, "where data: ", data)
 
   const erStyle = "border-red-500 focus-visible:ring-red-500 shadow-sm-red-400"
 
@@ -132,12 +152,31 @@ export default function SignUpForm() {
               </FormItem>
             )}
           />
-          <Button type='submit' className='w-full' disabled={loading}>
-            {loading && <Loader2 className='mr-2 animate-spin' size={16} />}
+          <Button type='submit' className='w-full' disabled={isLoading}>
+            {isLoading && <Loader2 className='mr-2 animate-spin' size={16} />}
             Continue
           </Button>
         </form>
       </Form>
+
+      {isDialogOpen && (
+        <AlertDialog open={isDialogOpen} defaultOpen={true}>
+          <AlertDialogContent>
+            <AlertDialogDescription>
+              <div>
+                <ExclamationTriangleIcon fontSize={540}/>
+                <p className="">{data?.message}</p>
+              </div>
+            </AlertDialogDescription>
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={() => setDialogOpen(false)}>
+                Cancel
+              </AlertDialogCancel>
+              <Button onClick={() => router.replace("/login")}>Continue</Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
     </>
   )
 }

@@ -13,7 +13,7 @@ export async function DELETE(req:Request, { params }: {params: {id: any}}) {
 
         const idTransaksi = transaksi?.idTransaksi
         if(!transaksi){
-            return NextResponse.json({message: `Transaksi Dengan Kode ID ${idParam} Tidak Ditemukan !`})
+            return NextResponse.json({message: `Transaksi Dengan Kode ID ${idParam} Tidak Ditemukan !`}, {status: 200})
         }
 
         const deleteTransaksi = await prisma.transaksi.delete({

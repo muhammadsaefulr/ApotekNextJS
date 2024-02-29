@@ -22,6 +22,7 @@ import { Input } from "@/components/ui/input"
 import { signIn } from "next-auth/react"
 import { useForm } from "react-hook-form"
 import Link from "next/link"
+import { toast } from "sonner"
 
 export default function AuthForm() {
   const [loading, setLoading] = useState(false)
@@ -53,7 +54,7 @@ export default function AuthForm() {
     console.log("at data signin",signinData)
 
     if(signinData?.error){
-      alert("Password atau user yang dimasukan salah !")
+      toast.error("Email Atau Pasword Yang Dimasukan Salah !")
     }
 
     router.replace("/dashboard")

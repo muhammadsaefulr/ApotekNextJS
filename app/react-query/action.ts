@@ -30,6 +30,23 @@ interface UpdateDataParams {
 
 // User Function
 
+export const useRegisterStaff = () => {
+  return useMutation({
+    mutationKey: ["addStaff"],
+    mutationFn: async (newObj: any) => {
+      if (newObj !== null) {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/register`,
+          newObj,
+        )
+        return response.data
+      } else {
+        return null
+      }
+    },
+  })
+}
+
 export const useAddStaff = () => {
   return useMutation({
     mutationKey: ["addStaff"],
