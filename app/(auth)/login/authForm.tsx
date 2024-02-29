@@ -56,6 +56,7 @@ export default function AuthForm() {
 
     if(signinData?.error){
       toast.error("Email Atau Pasword Yang Dimasukan Salah !")
+      setLoading(false)
     }
 
     if(signinData?.ok){
