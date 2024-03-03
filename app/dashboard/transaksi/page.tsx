@@ -14,11 +14,12 @@ import { setDataBarangTransaksi } from "@/app/state/store/transaksi/store"
 
 import { Barang, columns } from "./columns"
 import DataTable from "./data-table"
+import { Loader2 } from "lucide-react"
 
 interface Props {}
 export default function Page({}: Props) {
   const { dataBarang } = setDataBarangTransaksi()
-  const { mutate: addTransaksi, data } = useAddTransaksi()
+  const { mutate: addTransaksi, data, isLoading: addLoading } = useAddTransaksi()
   const { data: DataTransaksi, isSuccess, isLoading } = useGetDataTransaksi()
 
   let total = 0
@@ -112,7 +113,8 @@ export default function Page({}: Props) {
           <Input value={total} disabled={true} type='name' id='name' />
         </div>
         <div className='mt-8'>
-          <Button type='submit' onClick={submitTransaction}>
+          <Button type='submit' disabled={addLoading} onClick={submitTransaction}>
+          {addLoading && <Loader2 className='mr-2 animate-spin' size={16} />}
             Submit
           </Button>
         </div>
