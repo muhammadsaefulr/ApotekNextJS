@@ -44,6 +44,15 @@ export const useRegisterStaff = () => {
         return null
       }
     },
+    onSuccess: () => {
+      return toast.success("Berhasil Registrasi Akun !")
+    },
+    onError: () => {
+      toast.error("Gagal Meregistrasi Akun !")
+      setTimeout(function () {
+        location.reload()
+      }, 2000)
+    },
   })
 }
 
@@ -62,14 +71,14 @@ export const useAddStaff = () => {
       }
     },
     onSuccess: () => {
-      toast.success("Berhasil Menambahkan Data staff !")
+      return toast.success("Berhasil Menambahkan Data staff !")
     },
     onError: () => {
       toast.error("Gagal Menambah data staff")
-      setTimeout(function(){
-        location.reload();
-    }, 2000);
-    }
+      setTimeout(function () {
+        location.reload()
+      }, 2000)
+    },
   })
 }
 
@@ -96,7 +105,10 @@ export const useUpdateDataStaff = () => {
   })
 }
 
-export const useGetStaffList = (queryParams? : {role?: string, username?: string}) => {
+export const useGetStaffList = (queryParams?: {
+  role?: string
+  username?: string
+}) => {
   return useQuery<ApiStaffList>({
     queryKey: ["useGetStaffList", queryParams?.role],
     queryFn: async () => {
@@ -184,7 +196,7 @@ export const useGetProductById = () => {
     },
     onError: () => {
       toast.error("gagal menghapus data !")
-    }
+    },
   })
 }
 
@@ -207,7 +219,6 @@ export const useAddProduct = () => {
     },
   })
 }
-
 
 export const useUpdateDataProduct = () => {
   return useMutation<any, Error, UpdateDataParams>({
@@ -358,11 +369,14 @@ export const useDeleteDataSupplier = () => {
 
 // transaksi
 
-export const useGetDataTransaksi = (params?: {viewBy: string}) => {
+export const useGetDataTransaksi = (params?: { viewBy: string }) => {
   return useQuery<ApiTransaksi>({
     queryKey: ["getDataTransaksi"],
     queryFn: async () => {
-      const transaksi = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/main/transaksi?page=1&view=${params?.viewBy}`, {cache: "no-cache"})
+      const transaksi = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/main/transaksi?page=1&view=${params?.viewBy}`,
+        { cache: "no-cache" },
+      )
       return transaksi.json()
     },
   })
@@ -388,7 +402,7 @@ export const useAddTransaksi = () => {
     },
     onError: () => {
       toast.error("Gagal Menambahkan Transaksi Ke Database !")
-    }
+    },
   })
 }
 
