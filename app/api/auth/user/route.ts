@@ -5,17 +5,22 @@ const prisma = new PrismaClient()
 
 export async function GET(req: NextRequest) {
   try {
-    const {searchParams} = new URL(req.url)
-    // const testDataUser = await prisma.user.findMany()
+    const { searchParams } = new URL(req.url)
     const queryRole = searchParams.get("role") || "Staff"
     const username = searchParams.get("username") || ""
+
+    let whereClause: any = {}
+    
+    if (username) {
+      whereClause.username = username
+    }
 
     const dataUser = await prisma.user.findMany({
       where: {
         role: {
-          roleName: queryRole
+          roleName: queryRole,
         },
-        username: username
+        ...whereClause,
       },
       include: {
         role: {
@@ -27,12 +32,15 @@ export async function GET(req: NextRequest) {
     })
 
     const revalidatewData = dataUser?.map((item) => ({
-        ...item,
-        role: item.role.roleName
+      ...item,
+      role: item.role.roleName,
     }))
 
     return NextResponse.json(
-      { message: "Semua Data User Berhasil Di Request !", data: revalidatewData },
+      {
+        message: "Semua Data User Berhasil Di Request !",
+        data: revalidatewData,
+      },
       { status: 200 },
     )
   } catch (err) {
@@ -40,6 +48,5 @@ export async function GET(req: NextRequest) {
       { message: "Internal Server Error !", err_detail: err },
       { status: 500 },
     )
-    
   }
 }

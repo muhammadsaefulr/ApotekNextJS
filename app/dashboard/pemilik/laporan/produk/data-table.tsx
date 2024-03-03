@@ -37,11 +37,12 @@ import {
 import DatePicker from "@/components/DatePicker"
 import TablePagination from "@/components/TabelPagination"
 import DataTableViewOptions from "@/components/TableViewOptions"
-
-import AddBarang from "./actions/add-barang"
-import EditBarang from "./actions/edit-barang"
 import { useGetKategoriProduct, useGetProduct } from "@/app/react-query/action"
 import { setStateDataBarangQuery } from "@/app/state/store/queryInput/store"
+
+import ToCSVProduk from "../tocsvProduk"
+import AddBarang from "./actions/add-barang"
+import EditBarang from "./actions/edit-barang"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -75,8 +76,15 @@ export default function DataTable<TData, TValue>({
     <>
       <div className='mt-6 space-y-2'>
         <div className='flex justify-between'>
-        <p className='font-bold uppercase'>Data Laporan Produk</p>
-          <DataTableViewOptions table={table} />
+          <p className='font-bold uppercase'>Data Laporan Produk</p>
+          <div className='flex gap-3'>
+            <div className=''>
+              <ToCSVProduk />
+            </div>
+            <div className=''>
+              <DataTableViewOptions table={table} />
+            </div>
+          </div>
         </div>
         <div className='rounded-md border px-2'>
           <Table>

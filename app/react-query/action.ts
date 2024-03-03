@@ -129,6 +129,22 @@ export const useGetStaffById = () => {
   })
 }
 
+export const useDeleteStaff = () => {
+  return useMutation({
+    mutationKey: ["deleteStaff"],
+    mutationFn: async (newObj: any) => {
+      if (newObj !== null) {
+        const response = await axios.delete(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/user/${newObj}`,
+        )
+        return response.data
+      } else {
+        return null
+      }
+    },
+  })
+}
+
 // Product Function
 export const useGetProduct = (queryparams?: {
   kategori: number
@@ -163,6 +179,12 @@ export const useGetProductById = () => {
         return null
       }
     },
+    onSuccess: () => {
+      toast.success("berhasil menghapus data !")
+    },
+    onError: () => {
+      toast.error("gagal menghapus data !")
+    }
   })
 }
 

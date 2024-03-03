@@ -18,6 +18,7 @@ import { PageProduct } from "./produk/page"
 import CardBiayaSuplai from "./util/CardBiayaSuplai"
 import CardProfit from "./util/CardProfit"
 import ChartPenjualan from "./util/ChartPenjualan"
+import CardLabaKotor from "./util/CardLabaKotor"
 
 interface Props {}
 export default function Page({}: Props) {
@@ -49,9 +50,10 @@ export default function Page({}: Props) {
   } else {
     return (
       <div className=''>
-        <div className='xl:flex justify-around md: block'>
+        <div className='xl:flex justify-center w-full gap-3 md: block w-full'>
           <CardBiayaSuplai data={Produk?.hpp} />
           <CardProfit data={Produk?.labaBersih} />
+          <CardLabaKotor data={Produk?.labaKotor} />
         </div>
         <div className="pt-6">
           <DataTable columns={columns} data={jsonData} />

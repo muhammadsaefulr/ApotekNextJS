@@ -1,20 +1,23 @@
 "use client"
 
-import { FormEvent, useState } from "react"
-import { cookies } from "next/headers"
-import Link from "next/link"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { GitHubLogoIcon } from "@radix-ui/react-icons"
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons"
 import axios from "axios"
 import { Loader2 } from "lucide-react"
 import { signIn } from "next-auth/react"
 import { useForm } from "react-hook-form"
-import { toast } from "sonner"
 import * as z from "zod"
 
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+} from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
   Form,
   FormControl,
@@ -24,63 +27,71 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useRegisterStaff } from "@/app/react-query/action"
+import { AlertDialogAction } from "@radix-ui/react-alert-dialog"
 
-export default function AuthForm() {
-  const {
-    mutate: submitRegsiterData,
-    data: userRegist,
-    isLoading,
-    isError,
-    isSuccess,
-  } = useRegisterStaff()
+export default function SignUpForm() {
   const router = useRouter()
+  const [isDialogOpen, setDialogOpen] = useState(false)
   const formSchema = z.object({
     username: z
       .string()
       .min(4, { message: "Username must not be less than 4 characters." })
       .max(20, { message: "IUsername cannot be more than 20 characters" }),
     email: z.string().email({ message: "Invalid email address." }),
-    password: z.string().min(1, { message: "Invalid password" }),
+    password: z.string().min(1, { message: "Invalid password." }),
+    roleId: z.number().min(1),
   })
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: "saepulid",
+      email: "epulid@gmail.com",
+      password: "admin123",
+      roleId: 1,
+    },
   })
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+  const {
+    mutate: onSubmitAPI,
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useRegisterStaff()
 
-    const registerData = {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+  
+    const valuesValidation = {
+      username: values.username,
       email: values.email,
       password: values.password,
-      username: values.username,
+      roleId: values.roleId,
     }
 
-    console.log("at data register", registerData)
-
-    submitRegsiterData(registerData)
+    onSubmitAPI(valuesValidation)
 
     if (isError) {
-      toast.error("Gagal Registrasi Akun !")
+      setDialogOpen(true)
     }
 
     if (isSuccess) {
-      toast.success("Berhasil Membuat Akun !")
+      const loggedIn = await signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        redirect: false,
+      })
+
+      if (loggedIn?.ok) {
+        router.replace("/dashboard")
+      } else {
+        setDialogOpen(true)
+      }
     }
-
-    const signinData = await signIn("credentials", {
-      email: values.email,
-      password: values.password,
-      redirect: false,
-    })
-
-    if(signinData?.ok)
-    router.replace("/dashboard")
-  
   }
 
-  const {
-    formState: { errors },
-  } = form
+  const { errors } = form.formState
+  console.log("tes isOpenDialog : ", isDialogOpen, "where data: ", data)
 
   const erStyle = "border-red-500 focus-visible:ring-red-500 shadow-sm-red-400"
 
@@ -96,9 +107,9 @@ export default function AuthForm() {
                 <FormItem>
                   <FormControl>
                     <Input
-                      placeholder='username'
+                      placeholder='usename'
                       {...field}
-                      className={errors.email && erStyle}
+                      className={errors.username && erStyle}
                     />
                   </FormControl>
                   <FormMessage />
@@ -143,10 +154,29 @@ export default function AuthForm() {
           />
           <Button type='submit' className='w-full' disabled={isLoading}>
             {isLoading && <Loader2 className='mr-2 animate-spin' size={16} />}
-            Submit
+            Continue
           </Button>
         </form>
       </Form>
+
+      {isDialogOpen && (
+        <AlertDialog open={isDialogOpen} defaultOpen={true}>
+          <AlertDialogContent>
+            <AlertDialogDescription>
+              <div>
+                <ExclamationTriangleIcon fontSize={540}/>
+                <p className="">{data?.message}</p>
+              </div>
+            </AlertDialogDescription>
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={() => setDialogOpen(false)}>
+                Cancel
+              </AlertDialogCancel>
+              <Button onClick={() => router.replace("/login")}>Continue</Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
     </>
   )
 }

@@ -8,6 +8,7 @@ import {
 } from "@radix-ui/react-icons"
 import { Column, ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
+import { toast } from "sonner"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -20,8 +21,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useDialogEditStaffStore, useDialogEditSupplierStore } from "@/app/state/store/pagecomponents/dialogTrigger"
-import { useDeleteDataSupplier } from "@/app/react-query/action"
+import { useDeleteDataSupplier, useDeleteStaff } from "@/app/react-query/action"
+import {
+  useDialogEditStaffStore,
+  useDialogEditSupplierStore,
+} from "@/app/state/store/pagecomponents/dialogTrigger"
 
 export type dataItems = {
   id: number
@@ -52,15 +56,15 @@ export const columns: ColumnDef<dataItems>[] = [
     id: "actions",
     header: () => <div className='text-right'>Action</div>,
     cell: ({ row }) => {
-      const {isOpen, openDialog } = useDialogEditStaffStore()
+      const { isOpen, openDialog } = useDialogEditStaffStore()
       console.log("isOpen Modal View : ", isOpen)
       const DataRow = row.original
 
-      // const { mutate: deleteData } = useDeleteDataProduct()
+      const { mutate: deleteStaff, isError, isSuccess } = useDeleteStaff()
 
-      // const handleDelete = (id: number) => {
-      //   deleteData(id)
-      // }
+      const handleDelete = (id: number) => {
+        deleteStaff(id)
+      }
 
       return (
         <div className='text-right'>
@@ -78,9 +82,9 @@ export const columns: ColumnDef<dataItems>[] = [
               >
                 Copy Email
               </DropdownMenuItem>
-              {/* <DropdownMenuItem onClick={() => handleDelete(DataRow.id)}>
-                Hapus DataRow
-              </DropdownMenuItem> */}
+              <DropdownMenuItem onClick={() => handleDelete(DataRow.id)}>
+                Hapus Data
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => openDialog(DataRow.id)}>
                 Edit Data
               </DropdownMenuItem>

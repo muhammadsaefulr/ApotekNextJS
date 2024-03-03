@@ -69,8 +69,8 @@ export default function Component() {
                   </h1>
                   <p className='mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400'>
                     Maksimalkan Efisiensi Manajemen Apotek Anda dengan GoPotek -
-                    Platform Website Modern yang Memudahkan Pemantauan Stok,
-                    Penjualan, dan Pengelolaan Karyawan!{" "}
+                    Platform Website Modern yang Memudahkan Pemantauan Stok Dan
+                    Penjualan.
                   </p>
                   <div className='space-x-4'>
                     <Link
@@ -99,7 +99,7 @@ export default function Component() {
                     New Features
                   </div>
                   <h2 className='text-3xl font-bold tracking-tighter sm:text-5xl'>
-                    Lebih Simple, Lebih Baik
+                    Lebih Simple, Lebih Nyaman
                   </h2>
                   <p className='max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400'>
                     Dengan GoPotek, pengelolaan apotek Anda akan menjadi lebih
@@ -176,78 +176,6 @@ export default function Component() {
                     Contact CS
                   </Button>
                 </Link>
-              </div>
-            </div>
-          </section>
-          <section className='w-full py-12 md:py-24 lg:py-32'>
-            <div className='container grid items-center justify-center gap-4 px-4 text-center md:px-6 lg:gap-10'>
-              <div className='space-y-3'>
-                <h2 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl'>
-                  Meet our Team
-                </h2>
-                <p className='mx-auto max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400'>
-                  Berkenalan Dengan Dengan Tim Pendiri Kami
-                </p>
-              </div>
-              <div className='divide-y rounded-lg border'>
-                <div className='grid w-full grid-cols-3 items-stretch justify-center divide-x md:grid-cols-3'>
-                  <div className='mx-auto flex w-full items-center justify-center p-4 sm:p-8'>
-                    <img
-                      alt='Logo'
-                      className='aspect-[2/1] overflow-hidden rounded-lg object-contain object-center'
-                      height='70'
-                      src='/placeholder.svg'
-                      width='140'
-                    />
-                  </div>
-                  <div className='mx-auto flex w-full items-center justify-center p-4 sm:p-8'>
-                    <img
-                      alt='Logo'
-                      className='aspect-[2/1] overflow-hidden rounded-lg object-contain object-center'
-                      height='70'
-                      src='/placeholder.svg'
-                      width='140'
-                    />
-                  </div>
-                  <div className='mx-auto flex w-full items-center justify-center p-8'>
-                    <img
-                      alt='Logo'
-                      className='aspect-[2/1] overflow-hidden rounded-lg object-contain object-center'
-                      height='70'
-                      src='/placeholder.svg'
-                      width='140'
-                    />
-                  </div>
-                </div>
-                <div className='grid w-full grid-cols-3 items-stretch justify-center divide-x md:grid-cols-3'>
-                  <div className='mx-auto flex w-full items-center justify-center p-4 sm:p-8'>
-                    <img
-                      alt='Logo'
-                      className='aspect-[2/1] overflow-hidden rounded-lg object-contain object-center'
-                      height='70'
-                      src='/placeholder.svg'
-                      width='140'
-                    />
-                  </div>
-                  <div className='mx-auto flex w-full items-center justify-center p-4 sm:p-8'>
-                    <img
-                      alt='Logo'
-                      className='aspect-[2/1] overflow-hidden rounded-lg object-contain object-center'
-                      height='70'
-                      src='/placeholder.svg'
-                      width='140'
-                    />
-                  </div>
-                  <div className='mx-auto flex w-full items-center justify-center p-4 sm:p-8'>
-                    <img
-                      alt='Logo'
-                      className='aspect-[2/1] overflow-hidden rounded-lg object-contain object-center'
-                      height='70'
-                      src='/placeholder.svg'
-                      width='140'
-                    />
-                  </div>
-                </div>
               </div>
             </div>
           </section>

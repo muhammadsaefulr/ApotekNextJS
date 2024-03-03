@@ -5,7 +5,7 @@ export default function CardBiayaSuplai({ data }: any) {
   return (
     <>
       <div className='pt-3'>
-        <Card className={cn("mx-auto w-[380px]")}>
+        <Card className={cn("mx-auto w-[320px]")}>
           <CardHeader>
             <CardTitle className='text-center font-medium pt-2'>
              Biaya Suplai Semua Produk
