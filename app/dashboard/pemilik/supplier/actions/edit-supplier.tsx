@@ -64,15 +64,13 @@ export default function EditSupplier() {
         }
     }, [valueId])
 
-    console.log("value get supplier : ", valueSupplier)
     
     useEffect(() => {
-      if (valueSupplier?.data && valueSupplier?.data.length > 0) {
-        form.reset({
-          namaSupplier: valueSupplier.data[0]?.namaSupplier || '',
-          emailSupplier: valueSupplier.data[0]?.emailSupplier || '',
-        })
-      }
+      console.log("value get supplier : ", valueSupplier)
+      form.reset({
+        namaSupplier: valueSupplier?.data?.namaSupplier,
+        emailSupplier: valueSupplier?.data?.emailSupplier,
+      })
     }, [valueSupplier])
 
 

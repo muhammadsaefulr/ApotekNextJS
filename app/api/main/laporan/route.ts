@@ -5,12 +5,10 @@ const prisma = new PrismaClient()
 
 export async function GET(req: Request) {
     try {
-        // Mendapatkan tanggal awal dan akhir bulan ini
         const currentDate = new Date();
         const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), + 1);
         const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1);
 
-        // Mendapatkan informasi penjualan bulan ini
         const dataTransaksi = await prisma.transaksi.findMany({
             where: {
                 createdAt: {

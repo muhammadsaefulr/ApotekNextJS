@@ -11,6 +11,7 @@ declare module "next-auth" {
       role: []
     }
     token: {
+      uid: number,
       username: string
       role: string
     }

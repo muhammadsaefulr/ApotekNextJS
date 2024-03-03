@@ -96,13 +96,14 @@ export const useUpdateDataStaff = () => {
   })
 }
 
-export const useGetStaffList = (queryParams? : {role: string}) => {
+export const useGetStaffList = (queryParams? : {role?: string, username?: string}) => {
   return useQuery<ApiStaffList>({
     queryKey: ["useGetStaffList", queryParams?.role],
     queryFn: async () => {
       const role = queryParams?.role ?? "Staff"
+      const username = queryParams?.username ?? ""
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/user?role=${role}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/user?role=${role}&username=${username}`,
         {
           cache: "no-cache",
         },

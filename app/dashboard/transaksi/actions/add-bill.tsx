@@ -70,11 +70,11 @@ export default function AddBill() {
     const qty: number = parseInt(values.quantity.toString())
 
     const dataProduk = Barang?.data.find((data) => data.id === values.idBarang)
-    
+
     const valuesValidation = [
       {
         id: values.idBarang,
-        kodeProduk: dataProduk?.kodeProduk,        
+        kodeProduk: dataProduk?.kodeProduk,
         idSupplier: values.idSupplier,
         namaSupplier: dataProduk?.supplier,
         hargaPerPcs: dataProduk?.hargaJual,
@@ -99,7 +99,7 @@ export default function AddBill() {
 
   return (
     <div className='mx-auto grid'>
-      <div className='grid-cols-6 grid-rows-3 gap-2'>
+      <div className='grid-rows-3 gap-2 md:block xl:grid-cols-6'>
         <Form {...form}>
           <form
             id='addbills-form'
@@ -151,10 +151,19 @@ export default function AddBill() {
                                     product.namaBarang,
                                   )
                                   form.setValue("idBarang", product.id)
-                                  form.setValue("idSupplier", product.idSupplier)
-                                  form.setValue("namaSupplier", product.supplier)
+                                  form.setValue(
+                                    "idSupplier",
+                                    product.idSupplier,
+                                  )
+                                  form.setValue(
+                                    "namaSupplier",
+                                    product.supplier,
+                                  )
                                   form.setValue("hargaJual", product.hargaJual)
-                                  form.setValue("idSupplier", product.idSupplier)
+                                  form.setValue(
+                                    "idSupplier",
+                                    product.idSupplier,
+                                  )
                                 }}
                               >
                                 {product.namaBarang}
@@ -232,6 +241,14 @@ export default function AddBill() {
             </div>
           </form>
         </Form>
+          <div className='md:flex justify-around pt-4 xl:hidden'>
+            <div className=''>
+              <Button className='' type='submit' form='addbills-form'>
+                Tambah Ke List
+              </Button>
+              <Button onClick={() => location.reload()} className="mx-4">Reset</Button>
+            </div>
+          </div>
       </div>
     </div>
   )

@@ -8,12 +8,14 @@ export async function GET(req: NextRequest) {
     const {searchParams} = new URL(req.url)
     // const testDataUser = await prisma.user.findMany()
     const queryRole = searchParams.get("role") || "Staff"
+    const username = searchParams.get("username") || ""
 
     const dataUser = await prisma.user.findMany({
       where: {
         role: {
           roleName: queryRole
-        }
+        },
+        username: username
       },
       include: {
         role: {

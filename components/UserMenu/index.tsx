@@ -36,13 +36,19 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 import { Button } from "../ui/button"
+import { useRouter, useSearchParams } from "next/navigation"
+import Link from "next/link"
 
 interface Props {
   user: Pick<User, "username" | "name" | "image" | "email">
 }
 export default function UserMenu({ user }: Props) {
+
+  const router = useRouter()
+
   const handleLogOut = () => {
     signOut()
+    router.replace("/")
   }
 
   return (
@@ -59,8 +65,10 @@ export default function UserMenu({ user }: Props) {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem>
+            <Link href="/dashboard/profile" className="flex">
             <UserIcon className='mr-2 h-4 w-4' />
             <span>Profile</span>
+            </Link>
             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={handleLogOut}>

@@ -93,7 +93,7 @@ export default function Page({}: Props) {
         <p className='mb-3 font-bold'>
           DATE: <a className='font-regular'>{formattedDate}</a>
         </p>
-        <div className='flex justify-between'>
+        <div className='xl:flex justify-between md: hidden'>
           <div className='mx-3'>
             <Button className='' type='submit' form='addbills-form'>
               Tambah Ke List
@@ -106,7 +106,7 @@ export default function Page({}: Props) {
       </div>
       <DataTable columns={columns} data={jsonData} />
 
-      <div className='flex justify-between pt-3'>
+      <div className='xl:flex justify-between pt-3 md:block'>
         <div className='grid w-full max-w-sm items-center gap-1.5'>
           <p className='font-bold'>Total Harga</p>
           <Input value={total} disabled={true} type='name' id='name' />

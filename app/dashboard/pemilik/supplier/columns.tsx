@@ -82,8 +82,8 @@ export const columns: ColumnDef<dataItems>[] = [
             <DropdownMenuContent align='end'>
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DeleteDialog data={Barang.id}/>
               <DropdownMenuItem onClick={() => openDialog(Barang.id)}>View Supplier details</DropdownMenuItem>
+              <DeleteDialog data={Barang.id}/>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

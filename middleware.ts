@@ -25,4 +25,4 @@ export default withAuth(
 )
 
 // Ref: https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
-export const config = { matcher: ["/dashboard", "/dashboard/pemilik/:path*", "/login"] }
+export const config = { matcher: ["/dashboard/:path*", "/dashboard/pemilik/:path*", "/login"] }
