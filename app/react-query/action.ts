@@ -151,6 +151,12 @@ export const useDeleteStaff = () => {
         return null
       }
     },
+    onSuccess: () => {
+      return toast.success("Berhasil Menghapus Data staff !")
+    },
+    onError: () => {
+      return toast.error("Gagal menghapus Data Staff !")
+    }
   })
 }
 
