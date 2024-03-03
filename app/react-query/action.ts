@@ -48,10 +48,7 @@ export const useRegisterStaff = () => {
       return toast.success("Berhasil Registrasi Akun !")
     },
     onError: () => {
-      toast.error("Gagal Meregistrasi Akun !")
-      setTimeout(function () {
-        location.reload()
-      }, 2000)
+      return toast.error("Gagal Meregistrasi Akun !")
     },
   })
 }

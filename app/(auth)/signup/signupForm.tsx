@@ -59,23 +59,17 @@ export default function AuthForm() {
 
     submitRegsiterData(registerData)
 
-    if (isError) {
-      toast.error("Gagal Registrasi Akun !")
-    }
-
     if (isSuccess) {
-      toast.success("Berhasil Membuat Akun !")
+      const signinData = await signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        redirect: false,
+      })
+
+      if (signinData?.ok) {
+        router.replace("/dashboard")
+      }
     }
-
-    const signinData = await signIn("credentials", {
-      email: values.email,
-      password: values.password,
-      redirect: false,
-    })
-
-    if(signinData?.ok)
-    router.replace("/dashboard")
-  
   }
 
   const {
