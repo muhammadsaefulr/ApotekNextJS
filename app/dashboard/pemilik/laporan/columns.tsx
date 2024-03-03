@@ -32,6 +32,7 @@ export type dataItems = {
   hargaPerProduk: number,
   total: number,
 }
+
 export const columns: ColumnDef<dataItems>[] = [
   {
     accessorKey: "namaProduk",

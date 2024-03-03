@@ -13,7 +13,6 @@ import {
   SortingState,
   useReactTable,
 } from "@tanstack/react-table"
-import { CSVLink } from "react-csv"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 
@@ -38,14 +37,11 @@ import {
 import DatePicker from "@/components/DatePicker"
 import TablePagination from "@/components/TabelPagination"
 import DataTableViewOptions from "@/components/TableViewOptions"
-import {
-  setStatedataStaffQuery,
-  setStateDataSupplierQuery,
-} from "@/app/state/store/queryInput/store"
 
-import ToCSV from "./tocsvTransaksi"
-import CardProfit from "./util/CardProfit"
-import ToCSVTransaksi from "./tocsvTransaksi"
+import AddBarang from "./actions/add-barang"
+import EditBarang from "./actions/edit-barang"
+import { useGetKategoriProduct, useGetProduct } from "@/app/react-query/action"
+import { setStateDataBarangQuery } from "@/app/state/store/queryInput/store"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -75,20 +71,12 @@ export default function DataTable<TData, TValue>({
       columnFilters,
     },
   })
-
   return (
     <>
-      <div className='space-y-2'>
+      <div className='mt-6 space-y-2'>
         <div className='flex justify-between'>
-          <p className='font-bold uppercase'>Data Laporan Transaksi</p>
-          <div className='flex justify-around gap-3'>
-            <div className=''>
-              <ToCSVTransaksi/>
-            </div>
-            <div className=''>
-              <DataTableViewOptions table={table} />
-            </div>
-          </div>
+        <p className='font-bold uppercase'>Data Laporan Produk</p>
+          <DataTableViewOptions table={table} />
         </div>
         <div className='rounded-md border px-2'>
           <Table>
@@ -140,6 +128,7 @@ export default function DataTable<TData, TValue>({
             </TableBody>
           </Table>
         </div>
+
         <>
           <TablePagination table={table} />
         </>

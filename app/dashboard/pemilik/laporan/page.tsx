@@ -1,7 +1,9 @@
 "use client"
 
 import { useEffect } from "react"
+import { CSVLink } from "react-csv"
 
+import { Button } from "@/components/ui/button"
 import CardSkeleton from "@/components/CardSkeleton"
 import {
   useGetDataTransaksi,
@@ -12,15 +14,20 @@ import {
 
 import { columns, dataItems } from "./columns"
 import DataTable from "./data-table"
+import { PageProduct } from "./produk/page"
+import CardBiayaSuplai from "./util/CardBiayaSuplai"
 import CardProfit from "./util/CardProfit"
 import ChartPenjualan from "./util/ChartPenjualan"
-import CardBiayaSuplai from "./util/CardBiayaSuplai"
 
 interface Props {}
 export default function Page({}: Props) {
-
   const { data: Transaksi } = useGetDataTransaksi()
-  const { data: Produk, isLoading, isError, isSuccess } = useGetLaporanPejualan()
+  const {
+    data: Produk,
+    isLoading,
+    isError,
+    isSuccess,
+  } = useGetLaporanPejualan()
   console.log("data transaksi : ", Transaksi)
 
   const jsonData: dataItems[] = Produk
@@ -32,7 +39,7 @@ export default function Page({}: Props) {
           kodeProduk: item.kodeBarang,
           hargaPerProduk: item.hargaPerProduk,
           quantity: item.quantity,
-          total: item.total
+          total: item.total,
         }
       })
     : []
@@ -41,21 +48,22 @@ export default function Page({}: Props) {
     return <CardSkeleton />
   } else {
     return (
-      <div className="">
-
-      <div className='flex justify-between'>
-        <div>
+      <div className=''>
+        <div className='xl:flex justify-around md: block'>
+          <CardBiayaSuplai data={Produk?.hpp} />
+          <CardProfit data={Produk?.labaBersih} />
+        </div>
+        <div className="pt-6">
           <DataTable columns={columns} data={jsonData} />
         </div>
-        <div className='p-6'>
-          <CardBiayaSuplai data={Produk?.hpp}/>
-          <CardProfit data={Produk?.labaBersih}/>
+        <div className=''>
+          <PageProduct />
         </div>
-      </div>
 
-      <div className="p-2 pt-12">
-        <ChartPenjualan data={Transaksi?.data}/>
-      </div>
+        <div className='p-2 pt-8'>
+          <p className='font-bold uppercase pb-4'>Statistik Penjualan Produk</p>
+          <ChartPenjualan data={Transaksi?.data} />
+        </div>
       </div>
     )
   }
