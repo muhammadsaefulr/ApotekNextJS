@@ -69,7 +69,7 @@ export const columns: ColumnDef<Barang>[] = [
     header: () => <div className='text-right'>Action</div>,
     cell: ({ row }) => {
       const {isOpen, openDialog } = useDialogViewBarangStore()
-      console.log("isOpen Modal View : ", isOpen)
+      // console.log("isOpen Modal View : ", isOpen)
       const Barang = row.original
 
       const { mutate: deleteData } = useDeleteDataProduct()

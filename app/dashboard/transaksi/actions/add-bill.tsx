@@ -93,7 +93,7 @@ export default function AddBill() {
     formState: { errors },
   } = form
 
-  console.log("data state transaksi : ", dataBarang)
+  // console.log("data state transaksi : ", dataBarang)
 
   const erStyle = "border-red-500 focus-visible:ring-red-500 shadow-sm-red-400"
 

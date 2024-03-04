@@ -57,7 +57,7 @@ export const columns: ColumnDef<dataItems>[] = [
     header: () => <div className='text-right'>Action</div>,
     cell: ({ row }) => {
       const { isOpen, openDialog } = useDialogEditStaffStore()
-      console.log("isOpen Modal View : ", isOpen)
+      // console.log("isOpen Modal View : ", isOpen)
       const DataRow = row.original
 
       const { mutate: deleteStaff, isError, isSuccess } = useDeleteStaff()

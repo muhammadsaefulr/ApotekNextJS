@@ -103,11 +103,11 @@ export const useUpdateDataStaff = () => {
 }
 
 export const useGetStaffList = (queryParams?: {
-  role?: string
-  username?: string
+  role: string
+  username: string
 }) => {
   return useQuery<ApiStaffList>({
-    queryKey: ["useGetStaffList", queryParams?.role],
+    queryKey: ["useGetStaffList", queryParams?.role, queryParams?.username],
     queryFn: async () => {
       const role = queryParams?.role ?? "Staff"
       const username = queryParams?.username ?? ""

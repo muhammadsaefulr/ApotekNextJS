@@ -66,7 +66,7 @@ export default function EditSupplier() {
 
     
     useEffect(() => {
-      console.log("value get supplier : ", valueSupplier)
+      // console.log("value get supplier : ", valueSupplier)
       form.reset({
         namaSupplier: valueSupplier?.data?.namaSupplier,
         emailSupplier: valueSupplier?.data?.emailSupplier,
@@ -153,7 +153,7 @@ export default function EditSupplier() {
                         <FormControl>
                           <Input
                             type='namaSupplier'
-                            placeholder='Masukan Kode Produk (Untuk Di Scan Nantinya)'
+                            placeholder='Masukan email supplier'
                             {...field}
                             className={errors.emailSupplier && erStyle}
                           />

@@ -173,8 +173,8 @@ export default function EditBarang() {
                         <Label className='text-right'>Kode Produk</Label>
                         <FormControl>
                           <Input
-                            type='namaBarang'
-                            placeholder='Masukan Kode Produk (Untuk Di Scan Nantinya)'
+                            type='kodeProduk'
+                            placeholder='Masukan Kode Produk (Opsional)'
                             {...field}
                             className={errors.kodeProduk && erStyle}
                           />

@@ -13,8 +13,9 @@ import { setStatedataStaffQuery } from "@/app/state/store/queryInput/store";
 
     const { dataStaffQuery } = setStatedataStaffQuery()
 
-    const { data, isLoading, isError, isSuccess } = useGetStaffList()
-    console.log("data staff : ",data?.data, "isLoading: ", isLoading)
+    console.log("get state zustand staffQuery: ", dataStaffQuery)
+    const { data, isLoading, isError, isSuccess } = useGetStaffList({username: dataStaffQuery?.username})
+    // console.log("data staff : ",data?.data, "isLoading: ", isLoading)
     
     const jsonData: dataItems[] =  data && data.data ? data.data.map((item)  => {
       return {

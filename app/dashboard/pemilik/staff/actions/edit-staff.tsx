@@ -34,7 +34,7 @@ import { useDialogEditStaffStore } from "@/app/state/store/pagecomponents/dialog
 
 export default function EditStaff() {
   const { isOpen, value: valueId, closeDialog } = useDialogEditStaffStore()
-  console.log("data state supplier", valueId)
+  // console.log("data state supplier", valueId)
 
   const { mutate: idUser, data: valueUser } = useGetStaffById()
 
@@ -45,7 +45,7 @@ export default function EditStaff() {
     }
   }, [valueId])
 
-  console.log("value get supplier : ", valueUser)
+  // console.log("value get supplier : ", valueUser)
 
   useEffect(() => {
       form.reset({

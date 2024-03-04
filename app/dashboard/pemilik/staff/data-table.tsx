@@ -149,8 +149,12 @@ const FilterForm = () => {
     },
   })
   const onSubmit = (value: any) => {
-    setDataStaffQuery(value)
-    console.log(value)
+    const validateSubmit = {
+      ...value,
+      username: value.username
+    }
+    setDataStaffQuery(validateSubmit)
+    console.log("data parse find staff",validateSubmit)
   }
   return (
     <div className='mb-2 flex flex-wrap gap-2'>

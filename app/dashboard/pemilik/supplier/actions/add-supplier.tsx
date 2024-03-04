@@ -116,7 +116,7 @@ export default function AddSupplier() {
                         <FormControl>
                           <Input
                             type='namaSupplier'
-                            placeholder='Masukan Nama Barang'
+                            placeholder='Masukan Nama Supplier'
                             {...field}
                             className={errors.namaSupplier && erStyle}
                           />
