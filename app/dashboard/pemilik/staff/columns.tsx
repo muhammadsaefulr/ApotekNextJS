@@ -82,11 +82,11 @@ export const columns: ColumnDef<dataItems>[] = [
               >
                 Copy Email
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleDelete(DataRow.id)}>
-                Hapus Data
-              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => openDialog(DataRow.id)}>
                 Edit Data
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleDelete(DataRow.id)}>
+                Hapus Data
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

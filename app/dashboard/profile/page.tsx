@@ -25,10 +25,12 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useGetStaffById, useUpdateDataStaff } from "@/app/react-query/action"
+import Loading from "../loading"
 
 export default function Component() {
   const { setValue } = useForm()
 
+  const [isLoading, setPageLoading] = useState(true)
   const { data: session, status } = useSession()
 
   const [userfetch, setUserFetch] = useState<{ username?: string; email?: string; password?: string }>({})
@@ -36,7 +38,7 @@ export default function Component() {
   const { mutate: updateData } = useUpdateDataStaff()
 
   let userId: any
-  console.log(session?.user.id)
+  // console.log(session?.user.id)
 
   useEffect(() => {
     userId = session?.user.id ?? ""
@@ -45,8 +47,14 @@ export default function Component() {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/user/${userId}`,
       )
+      setPageLoading(true)
+
       const resp = await response.json()
       const validate = (resp.data)
+
+      if(validate){
+        setPageLoading(false)
+      }
       setUserFetch({username: validate.username, email: validate.email})
 
       form.reset({
@@ -80,12 +88,16 @@ export default function Component() {
       email: values.email,
     }
 
-    updateData({ id: parseInt(userId), newObj: validationSubmit })
+    // updateData({ id: parseInt(userId), newObj: validationSubmit })
+  }
+  console.log("Page IS Loading: ", isLoading)
+  
+  if(isLoading){
+    return (
+      <Loading />
+    )
   }
 
-  // console.log(form.getValues("username"))
-  // console.log(form.getValues("username") !== undefined ? false : true)
-  
   return (
     <div className='mx-auto flex justify-center'>
       <Card className='max-w-8xl w-full'>
@@ -99,6 +111,7 @@ export default function Component() {
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className='w-full space-y-3'
+            id="profile-edit"
           >
             <CardContent>
               <div className='space-y-2 pt-2'>
@@ -179,7 +192,7 @@ export default function Component() {
               <Button className='flex-1' variant='outline'>
                 Cancel
               </Button>
-              <Button className='flex-1'>Save</Button>
+              <Button type="submit" className='flex-1' form="profile-edit">Save</Button>
             </CardFooter>
           </form>
         </Form>

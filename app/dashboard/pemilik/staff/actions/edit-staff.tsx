@@ -48,17 +48,17 @@ export default function EditStaff() {
   console.log("value get supplier : ", valueUser)
 
   useEffect(() => {
-    if (valueUser?.data && valueUser?.data.length > 0) {
       form.reset({
-        username: valueUser.data[0].username || "",
-        email: valueUser.data[0].email || "",
+        username: valueUser?.data.username || "",
+        email: valueUser?.data.email || "",
+        password: valueUser?.data.password || ""
       })
-    }
   }, [valueUser])
 
   const formSchema = z.object({
-    email: z.string().email(),
-    username: z.string().min(1),
+    email: z.string().email().min(10),
+    username: z.string().min(10),
+    password: z.string().min(1)
   })
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -134,10 +134,30 @@ export default function EditStaff() {
                         <Label className='text-right'>Email User</Label>
                         <FormControl>
                           <Input
-                            type='username'
-                            placeholder='Masukan Kode Produk (Untuk Di Scan Nantinya)'
+                            type='email'
+                            placeholder='Masukan Email'
                             {...field}
                             className={errors.email && erStyle}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )
+                  }}
+                />
+                <FormField
+                  control={form.control}
+                  name='password'
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <Label className='text-right'>Password User</Label>
+                        <FormControl>
+                          <Input
+                            type='email'
+                            placeholder='Masukan Password'
+                            {...field}
+                            className={errors.password && erStyle}
                           />
                         </FormControl>
                         <FormMessage />

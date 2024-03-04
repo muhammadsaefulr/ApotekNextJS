@@ -401,7 +401,9 @@ export const useAddTransaksi = () => {
     },
     onSuccess: () => {
       toast.success("Berhasil Menambahkan Transaksi Ke Database !")
-      window.location.reload()
+      setTimeout(function () {
+        location.reload()
+      }, 2000)
     },
     onError: () => {
       toast.error("Gagal Menambahkan Transaksi Ke Database !")
