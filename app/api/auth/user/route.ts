@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
     let whereClause: any = {}
     
     if (username) {
-      whereClause.username = username
+      whereClause = {username: {contains: username} }
     }
 
     const dataUser = await prisma.user.findMany({

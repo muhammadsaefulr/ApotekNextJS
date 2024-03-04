@@ -50,7 +50,7 @@ export async function GET(req: NextRequest) {
 
     let whereQuery = {} as any
     if(findNamaSupplier){
-      whereQuery.namaSupplier = findNamaSupplier
+      whereQuery = {namaSupplier: {contains: findNamaSupplier}}
     }
 
     const dataRes = await prisma.supplierBarang.findMany({
