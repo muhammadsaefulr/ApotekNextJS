@@ -1,13 +1,17 @@
 "use client"
 
-import { FormEvent, useState } from "react"
+import { FormEvent, useEffect, useState } from "react"
+import { cookies } from "next/headers"
+import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { GitHubLogoIcon } from "@radix-ui/react-icons"
 import axios from "axios"
 import { Loader2 } from "lucide-react"
+import { signIn } from "next-auth/react"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 import * as z from "zod"
-import { cookies } from 'next/headers'
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -19,10 +23,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { signIn } from "next-auth/react"
-import { useForm } from "react-hook-form"
-import Link from "next/link"
-import { toast } from "sonner"
 
 export default function AuthForm() {
   const [loading, setLoading] = useState(false)
@@ -40,7 +40,16 @@ export default function AuthForm() {
   })
 
   const searchParams = useSearchParams()
-  const callbackUrl = searchParams.get("callbackUrl") || "/profile"
+  const callbackUrl = searchParams.get("callbackUrl")
+  const errorsUrl = searchParams.get("error") || ""
+
+  useEffect(() => {
+
+    if (errorsUrl === "CredentialsSignin") {
+        toast.error("eeeee")
+      }
+
+  }, [errorsUrl])
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
@@ -49,21 +58,19 @@ export default function AuthForm() {
     const signinData = await signIn("credentials", {
       email: values.email,
       password: values.password,
-      redirect: true
+      redirect: true,
+      callbackUrl: "/dashboard"
     })
 
-    // console.log("at data signin",signinData)
-
-    if(signinData?.error){
+    if (signinData?.error) {
       toast.error("Email Atau Pasword Yang Dimasukan Salah !")
       setLoading(false)
     }
 
-    if(signinData?.ok){
-      router.replace("/dashboard")
+    if (signinData?.ok) {
+      router.push("/dashboard")
       setLoading(false)
     }
-
   }
 
   const {
@@ -127,13 +134,15 @@ export default function AuthForm() {
           </span>
         </div>
       </div>
-        <p className='px-8 text-center text-sm text-muted-foreground'>
-              Belum Punya Akun?{" "}
-              <Link
-                href='/signup'
-                className='underline underline-offset-4 hover:text-primary'
-              >Daftar</Link>
-            </p>
+      <p className='px-8 text-center text-sm text-muted-foreground'>
+        Belum Punya Akun?{" "}
+        <Link
+          href='/signup'
+          className='underline underline-offset-4 hover:text-primary'
+        >
+          Daftar
+        </Link>
+      </p>
     </>
   )
 }
