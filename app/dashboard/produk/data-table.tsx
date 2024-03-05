@@ -208,6 +208,16 @@ const FilterForm = () => {
             )}
           />
           <Button type='submit'>Search</Button>
+          <Button
+            variant='outline'
+            type='reset'
+            onClick={() => {
+              form.reset()
+              window.location.reload()
+            }}
+          >
+            Reset
+          </Button>
         </form>
       </Form>
     </div>
