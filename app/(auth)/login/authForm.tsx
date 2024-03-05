@@ -49,7 +49,7 @@ export default function AuthForm() {
     const signinData = await signIn("credentials", {
       email: values.email,
       password: values.password,
-      redirect: false
+      redirect: true
     })
 
     // console.log("at data signin",signinData)
