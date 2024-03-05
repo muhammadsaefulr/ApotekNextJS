@@ -31,8 +31,8 @@ export default function Page({}: Props) {
   } = useGetLaporanPejualan()
   console.log("data transaksi : ", Transaksi)
 
-  const jsonData: dataItems[] = Produk
-    ? Produk?.data.map((item) => {
+  const jsonData: dataItems[] = Transaksi
+    ? Transaksi?.data.map((item) => {
         return {
           id: item.id,
           idTransaksi: item.idTransaksi,

@@ -377,7 +377,7 @@ export const useGetDataTransaksi = (params?: { viewBy: string }) => {
     queryKey: ["getDataTransaksi"],
     queryFn: async () => {
       const transaksi = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/main/transaksi?page=1&view=${params?.viewBy}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/main/transaksi?view=${params?.viewBy}`,
         { cache: "no-cache" },
       )
       return transaksi.json()
