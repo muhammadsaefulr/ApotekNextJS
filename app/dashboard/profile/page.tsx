@@ -74,8 +74,8 @@ export default function Component() {
   }, [session])
 
   const formSchema = z.object({
-    username: z.string().max(5),
-    email: z.string().max(5),
+    username: z.string().max(36),
+    email: z.string().max(50),
     // password: z.string(),
   })
 
