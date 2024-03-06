@@ -154,7 +154,7 @@ export default function EditStaff() {
                         <Label className='text-right'>Password User</Label>
                         <FormControl>
                           <Input
-                            type='email'
+                            type='password'
                             placeholder='Masukan Password'
                             {...field}
                             className={errors.password && erStyle}
