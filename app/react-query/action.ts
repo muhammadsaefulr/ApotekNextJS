@@ -24,7 +24,7 @@ import {
 } from "../../types/next-api"
 
 interface UpdateDataParams {
-  id: number
+  id: string | number | undefined
   newObj: any
 }
 

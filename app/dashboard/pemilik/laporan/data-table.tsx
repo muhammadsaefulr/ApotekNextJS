@@ -81,7 +81,7 @@ export default function DataTable<TData, TValue>({
       <div className='space-y-2'>
         <div className='flex justify-between'>
           <p className='font-bold uppercase'>Data Laporan Transaksi</p>
-          <div className='flex justify-around gap-3'>
+          <div className='xl: flex justify-around gap-3'>
             <div className=''>
               <ToCSVTransaksi/>
             </div>

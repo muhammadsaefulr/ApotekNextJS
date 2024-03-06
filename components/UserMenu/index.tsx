@@ -67,7 +67,7 @@ export default function UserMenu({ user }: Props) {
           <DropdownMenuItem>
             <Link href="/dashboard/profile" className="flex">
             <UserIcon className='mr-2 h-4 w-4' />
-            <span>Profile</span>
+            <span>Profile User</span>
             </Link>
             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
           </DropdownMenuItem>
