@@ -156,7 +156,7 @@ export const useDeleteStaff = () => {
     },
     onError: () => {
       return toast.error("Gagal menghapus Data Staff !")
-    }
+    },
   })
 }
 
@@ -394,6 +394,12 @@ export const useAddTransaksi = () => {
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/main/transaksi`,
           newObj,
         )
+
+        console.log(response.status)
+        if (response.status === 400) {
+          toast.error(`Gagal Membuat Transaksi, ${response?.data?.message}`)
+        }
+
         return response.data
       } else {
         return null
@@ -405,8 +411,9 @@ export const useAddTransaksi = () => {
         location.reload()
       }, 2000)
     },
-    onError: () => {
-      toast.error("Gagal Menambahkan Transaksi Ke Database !")
+    onError: (errors: any) => {
+      console.log(errors['response'].data.message)
+      toast.error(`Gagal Menambahkan Transaksi Ke Database, ${errors['response'].data.message} !`)
     },
   })
 }
